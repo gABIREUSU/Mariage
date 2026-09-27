@@ -1,0 +1,7 @@
+{
+  "name": "Mariage",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
