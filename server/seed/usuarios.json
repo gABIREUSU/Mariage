@@ -1,0 +1,14 @@
+[
+  {
+    "idUsuario": "usr-admin",
+    "nome": "Admin",
+    "email": "admin@mariage.com",
+    "senha": "admin123"
+  },
+  {
+    "idUsuario": "usr-marina",
+    "nome": "Marina Costa",
+    "email": "marina@mariage.com",
+    "senha": "123456"
+  }
+]

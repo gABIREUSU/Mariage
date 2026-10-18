@@ -1,0 +1,72 @@
+[
+  {
+    "idEvento": "eve-01",
+    "idCliente": "cli-ana-carlos",
+    "idUsuario": "usr-admin",
+    "data": "2026-09-05",
+    "horario": "10:00",
+    "endereco": "Parque Municipal, Av. Afonso Pena, s/n, Belo Horizonte",
+    "observacao": "Ensaio pré-wedding.",
+    "status": "concluido"
+  },
+  {
+    "idEvento": "eve-02",
+    "idCliente": "cli-beatriz-rafael",
+    "idUsuario": "usr-marina",
+    "data": "2026-09-12",
+    "horario": "17:30",
+    "endereco": "Espaço Jardim das Palmeiras, Av. Brasil, 450, Contagem",
+    "observacao": "",
+    "status": "concluido"
+  },
+  {
+    "idEvento": "eve-03",
+    "idCliente": "cli-juliana-marcos",
+    "idUsuario": "usr-marina",
+    "data": "2026-10-03",
+    "horario": "16:00",
+    "endereco": "Igreja Matriz de Santo Antônio, Praça da Matriz, 20, Sabará",
+    "observacao": "Cancelado pelos noivos; data remarcada para 28/11.",
+    "status": "cancelado"
+  },
+  {
+    "idEvento": "eve-04",
+    "idCliente": "cli-camila-pedro",
+    "idUsuario": "usr-admin",
+    "data": "2026-10-24",
+    "horario": "15:00",
+    "endereco": "Capela São José, Rua das Flores, 88, Betim",
+    "observacao": "Chegar 1h antes para os preparativos.",
+    "status": "agendado"
+  },
+  {
+    "idEvento": "eve-05",
+    "idCliente": "cli-rafaela-thiago",
+    "idUsuario": "usr-admin",
+    "data": "2026-11-14",
+    "horario": "14:00",
+    "endereco": "Avenida da Andradas, 175, Belo Horizonte",
+    "observacao": "Casamento civil.",
+    "status": "agendado"
+  },
+  {
+    "idEvento": "eve-06",
+    "idCliente": "cli-juliana-marcos",
+    "idUsuario": "usr-marina",
+    "data": "2026-11-28",
+    "horario": "18:00",
+    "endereco": "Quinta do Lago, Estrada Velha, km 7, Nova Lima",
+    "observacao": "Cerimônia ao ar livre; ter plano B para chuva.",
+    "status": "agendado"
+  },
+  {
+    "idEvento": "eve-07",
+    "idCliente": "cli-ana-carlos",
+    "idUsuario": "usr-admin",
+    "data": "2026-12-12",
+    "horario": "17:00",
+    "endereco": "Salão Villa Real, Rua Pernambuco, 900, Belo Horizonte",
+    "observacao": "Casamento e recepção; cobertura completa.",
+    "status": "agendado"
+  }
+]

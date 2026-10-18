@@ -1,0 +1,37 @@
+[
+  {
+    "idCliente": "cli-ana-carlos",
+    "nomeNoiva": "Ana Ribeiro",
+    "nomeNoivo": "Carlos Eduardo",
+    "email": "anaribeiro@gmail.com",
+    "telefone": "(31) 98765-4321"
+  },
+  {
+    "idCliente": "cli-beatriz-rafael",
+    "nomeNoiva": "Beatriz Almeida",
+    "nomeNoivo": "Rafael Lima",
+    "email": "bia.rafa@outlook.com",
+    "telefone": "(21) 99999-1111"
+  },
+  {
+    "idCliente": "cli-camila-pedro",
+    "nomeNoiva": "Camila Souza",
+    "nomeNoivo": "Pedro Santos",
+    "email": "cami.souza@hotmail.com",
+    "telefone": "(31) 97777-2222"
+  },
+  {
+    "idCliente": "cli-juliana-marcos",
+    "nomeNoiva": "Juliana Marques",
+    "nomeNoivo": "Marcos Vieira",
+    "email": "ju.marco@icloud.com",
+    "telefone": "(31) 95555-3333"
+  },
+  {
+    "idCliente": "cli-rafaela-thiago",
+    "nomeNoiva": "Rafaela Torres",
+    "nomeNoivo": "Thiago Nunes",
+    "email": "rafaela.thiago@gmail.com",
+    "telefone": "(31) 94444-5555"
+  }
+]
