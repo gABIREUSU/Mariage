@@ -1,0 +1,157 @@
+<ion-content [fullscreen]="true" class="config-background">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-sm="10" size-md="8" size-lg="6" class="config-container">
+
+
+        <div class="page-header">
+          <h1>Configurações</h1>
+          <p>Gerencie as preferências e configurações do sistema</p>
+        </div>
+
+        <div class="section-block">
+          <h2 class="section-title">Conta</h2>
+          <ion-card class="settings-card">
+            <ion-list lines="full" class="ion-no-padding">
+              
+              <ion-item button detail="false" (click)="abrirOpcao('perfil')">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="person-circle"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Perfil</h3>
+                  <p>Dados da sua conta e informações pessoais</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+              <ion-item button detail="false" (click)="abrirOpcao('seguranca')">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="lock-closed"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Segurança</h3>
+                  <p>Altere sua senha e preferências de acesso</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+              <ion-item button detail="false" lines="none" (click)="abrirOpcao('notificacoes')">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="notifications"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Notificações</h3>
+                  <p>Configure notificações por e-mail e WhatsApp</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+            </ion-list>
+          </ion-card>
+        </div>
+
+        <div class="section-block">
+          <h2 class="section-title">Configurações do sistema</h2>
+          <ion-card class="settings-card">
+            <ion-list lines="full" class="ion-no-padding">
+
+              <ion-item button detail="false" (click)="abrirOpcao('disponibilidade')">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="calendar"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Disponibilidade</h3>
+                  <p>Configure horários de trabalhos e folgas</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+              <ion-item button detail="false" (click)="abrirOpcao('servicos')">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="camera"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Serviços</h3>
+                  <p>Gerencie tipos de serviços e duração</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+              <ion-item button detail="false" lines="none" (click)="abrirOpcao('criadores')">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="person"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Criadores Audiovisuais</h3>
+                  <p>Gerencie sua equipe de criadores</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+            </ion-list>
+          </ion-card>
+        </div>
+
+
+        <div class="section-block">
+          <h2 class="section-title">Outros</h2>
+          <ion-card class="settings-card">
+            <ion-list lines="full" class="ion-no-padding">
+
+              <ion-item button detail="false" (click)="abrirOpcao('suporte')">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="help-outline"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Suporte</h3>
+                  <p>Central de ajuda e contato</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+              <ion-item button detail="false" lines="none" (click)="sairDaConta()">
+                <div class="icon-circle" slot="start">
+                  <ion-icon name="log-out-outline"></ion-icon>
+                </div>
+                <ion-label>
+                  <h3>Sair da conta</h3>
+                  <p>Encerrar sessão no sistema</p>
+                </ion-label>
+                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+              </ion-item>
+
+            </ion-list>
+          </ion-card>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="bottom-nav-toolbar">
+    <div class="bottom-nav">
+      <button class="nav-item" (click)="navegarTab('/home')">
+        <ion-icon name="list-outline"></ion-icon>
+        <span>Eventos</span>
+      </button>
+
+      <button class="nav-item" (click)="navegarTab('/home')">
+        <ion-icon name="person-circle"></ion-icon>
+        <span>Clientes</span>
+      </button>
+
+      <button class="nav-item" (click)="navegarTab('/home')">
+        <ion-icon name="calendar"></ion-icon>
+        <span>Calendário</span>
+      </button>
+
+      <button class="nav-item active">
+        <ion-icon name="settings"></ion-icon>
+        <span>Config</span>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
