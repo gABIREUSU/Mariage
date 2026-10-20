@@ -25,8 +25,7 @@ export class CalendarioPage implements ViewWillEnter {
   selecionada = signal<string | null>(null);
 
   private datasComEvento = computed(() => new Set(this.itens().map(v => v.evento.data)));
-
-  // arrow function: o ion-datetime chama sem contexto
+  
   destacar = (iso: string) =>
     this.datasComEvento().has(iso.slice(0, 10))
       ? { textColor: '#1c1c1c', backgroundColor: '#d6d7d9' }
