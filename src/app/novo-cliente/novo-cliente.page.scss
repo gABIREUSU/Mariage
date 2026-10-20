@@ -1,0 +1,134 @@
+.novo-cliente-background {
+    --background: #efefef;
+  }
+  
+  .page-container {
+    padding: 36px 22px 24px 22px;
+  }
+  
+  .page-header {
+    margin-bottom: 24px;
+  
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 400;
+      color: #3b3b3b;
+      margin: 0 0 4px 0;
+    }
+  
+    p {
+      font-size: 0.78rem;
+      color: #777777;
+      margin: 0;
+    }
+  }
+  
+  .form-card {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    margin: 0;
+    padding: 12px 6px;
+  }
+  
+  .input-group {
+    margin-bottom: 16px;
+  
+    .input-label {
+      display: block;
+      font-size: 0.8rem;
+      color: #8c8c8c;
+      margin-bottom: 6px;
+      margin-left: 6px;
+    }
+  
+    .custom-input-wrapper {
+      display: flex;
+      align-items: center;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 2px 14px;
+      background: #ffffff;
+  
+      .input-icon {
+        font-size: 1.15rem;
+        color: #bdbdbd;
+        margin-right: 10px;
+      }
+  
+      ion-input {
+        --padding-start: 0;
+        --padding-end: 0;
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+        --placeholder-color: #d0d0d0;
+        --placeholder-opacity: 1;
+        font-size: 0.88rem;
+        color: #333333;
+      }
+    }
+  }
+  
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+    margin-bottom: 8px;
+  }
+  
+  .btn-cadastrar {
+    width: 82%;
+    --background: #2f3237;
+    --background-activated: #1f2124;
+    --background-hover: #26292d;
+    --color: #ffffff;
+    --border-radius: 16px;
+    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.4px;
+    height: 44px;
+  }
+  
+  /* Barra Inferior (Tabs) */
+  .bottom-nav-toolbar {
+    --background: #ffffff;
+    --min-height: 60px;
+    border-top: 1px solid #e5e5e5;
+  }
+  
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 6px 0;
+  
+    .nav-item {
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #777777;
+      font-size: 0.72rem;
+      cursor: pointer;
+      padding: 4px 12px;
+  
+      ion-icon {
+        font-size: 1.35rem;
+        margin-bottom: 3px;
+        color: #666666;
+      }
+  
+      &.active {
+        color: #3b82f6;
+  
+        ion-icon {
+          color: #3b82f6;
+        }
+      }
+    }
+  }

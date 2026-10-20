@@ -1,13 +1,30 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
-  IonContent, IonGrid, IonRow, IonCol, IonCard, IonLabel, IonIcon, IonInput,
-  IonSelect, IonSelectOption, IonTextarea, IonButton, ToastController, ViewWillEnter,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardContent,
+  IonLabel,
+  IonInput,
+  IonIcon,
+  IonButton,
+  IonSelect,
+  IonSelectOption,
+  ToastController,
+  ViewWillEnter
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  people, calendarOutline, timeOutline, locationOutline, informationCircleOutline,
+  people,
+  calendarOutline,
+  timeOutline,
+  locationOutline,
+  informationCircleOutline
 } from 'ionicons/icons';
 import { Cliente } from '../models/cliente.model';
 import { ClienteService } from '../services/cliente.service';
@@ -17,45 +34,64 @@ import { hojeISO } from '../utils/datas';
 
 @Component({
   selector: 'app-novo-evento',
-  standalone: true,
   templateUrl: './novo-evento.page.html',
   styleUrls: ['./novo-evento.page.scss'],
+  standalone: true,
   imports: [
-    FormsModule, IonContent, IonGrid, IonRow, IonCol, IonCard, IonLabel, IonIcon,
-    IonInput, IonSelect, IonSelectOption, IonTextarea, IonButton,
-  ],
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonCard,
+    IonCardContent,
+    IonLabel,
+    IonInput,
+    IonIcon,
+    IonButton,
+    IonSelect,
+    IonSelectOption
+  ]
 })
 export class NovoEventoPage implements ViewWillEnter {
-  private clienteService = inject(ClienteService);
-  private eventoService = inject(EventoService);
-  private sessao = inject(SessaoService);
-  private router = inject(Router);
-  private toast = inject(ToastController);
 
-  clientes = signal<Cliente[]>([]);
-  carregado = signal(false);
-  salvando = signal(false);
+  clientes: Cliente[] = [];
+  carregado: boolean = false;
+  salvando: boolean = false;
 
-  idCliente = '';
-  data = '';
-  horario = '';
-  endereco = '';
-  observacao = '';
+  idCliente: string = '';
+  data: string = '';
+  horario: string = '';
+  endereco: string = '';
+  observacao: string = '';
 
-  readonly hoje = hojeISO();
+  readonly hoje: string = hojeISO();
 
-  constructor() {
-    addIcons({ people, calendarOutline, timeOutline, locationOutline, informationCircleOutline });
+  constructor(
+    private router: Router,
+    private clienteService: ClienteService,
+    private eventoService: EventoService,
+    private sessao: SessaoService,
+    private toast: ToastController
+  ) {
+    addIcons({
+      people,
+      calendarOutline,
+      timeOutline,
+      locationOutline,
+      informationCircleOutline
+    });
   }
 
   async ionViewWillEnter() {
     this.limpar();
     try {
-      this.clientes.set(await this.clienteService.getAll());
+      this.clientes = await this.clienteService.getAll();
     } catch {
       await this.avisar('Não foi possível carregar os clientes. O servidor está rodando?');
     } finally {
-      this.carregado.set(true);
+      this.carregado = true;
     }
   }
 
@@ -63,8 +99,8 @@ export class NovoEventoPage implements ViewWillEnter {
     return !!(this.idCliente && this.data && this.horario && this.endereco.trim());
   }
 
-  async salvar() {
-    if (!this.valido || this.salvando()) return;
+  async agendarEvento() {
+    if (!this.valido || this.salvando) return;
 
     const idUsuario = this.sessao.idUsuario;
     if (!idUsuario) {
@@ -76,7 +112,7 @@ export class NovoEventoPage implements ViewWillEnter {
       return;
     }
 
-    this.salvando.set(true);
+    this.salvando = true;
     try {
       await this.eventoService.create({
         idCliente: this.idCliente,
@@ -85,7 +121,7 @@ export class NovoEventoPage implements ViewWillEnter {
         horario: this.horario,
         endereco: this.endereco.trim(),
         observacao: this.observacao.trim(),
-        status: 'agendado',
+        status: 'agendado'
       });
       await this.avisar('Evento agendado', 'success');
       await this.router.navigateByUrl('/tabs/eventos');
@@ -94,10 +130,10 @@ export class NovoEventoPage implements ViewWillEnter {
       await this.avisar(
         !msg || msg === 'Failed to fetch'
           ? 'Não foi possível salvar. O servidor está rodando?'
-          : msg,
+          : msg
       );
     } finally {
-      this.salvando.set(false);
+      this.salvando = false;
     }
   }
 
@@ -110,7 +146,13 @@ export class NovoEventoPage implements ViewWillEnter {
   }
 
   private async avisar(mensagem: string, cor: 'success' | 'danger' = 'danger') {
-    const t = await this.toast.create({ message: mensagem, duration: 2500, position: 'top', color: cor });
+    const t = await this.toast.create({
+      message: mensagem,
+      duration: 2500,
+      position: 'top',
+      color: cor
+    });
     await t.present();
   }
+
 }

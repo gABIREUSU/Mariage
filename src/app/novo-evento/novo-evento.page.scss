@@ -1,17 +1,104 @@
-ion-card.form-card {
-  padding: 20px 16px 24px;
+.novo-evento-background {
+  --background: #efefef;
 }
 
-.linha-dupla {
-  display: flex;
-  gap: 16px;
+.page-container {
+  padding: 36px 22px 24px 22px;
+}
 
-  .input-group {
-    flex: 1;
-    min-width: 0;
+.page-header {
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: #3b3b3b;
+    margin: 0 0 4px 0;
+  }
+
+  p {
+    font-size: 0.78rem;
+    color: #777777;
+    margin: 0;
   }
 }
 
-.acoes {
-  padding: 8px 12% 0;
+.form-card {
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 8px 20px rgba(58, 41, 41, 0.12);
+  margin: 0;
+  padding: 12px 6px;
+}
+
+.date-time-row {
+  justify-content: space-between;
+
+  .col-left {
+    padding-right: 12px;
+  }
+
+  .col-right {
+    padding-left: 12px;
+  }
+}
+
+.input-group {
+  margin-bottom: 16px;
+
+  .input-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #8c8c8c;
+    margin-bottom: 6px;
+    margin-left: 6px;
+  }
+
+  .custom-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 2px 14px;
+    background: #ffffff;
+
+    .input-icon {
+      font-size: 1.15rem;
+      color: #c4c4c4;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    ion-input {
+      --padding-start: 0;
+      --padding-end: 0;
+      --padding-top: 10px;
+      --padding-bottom: 10px;
+      --placeholder-color: #d0d0d0;
+      --placeholder-opacity: 1;
+      font-size: 0.85rem;
+      color: #333333;
+    }
+  }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+  margin-bottom: 8px;
+}
+
+.btn-agendar {
+  width: 82%;
+  --background: #2f3237;
+  --background-activated: #1f2124;
+  --background-hover: #26292d;
+  --color: #ffffff;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.4px;
+  height: 44px;
 }

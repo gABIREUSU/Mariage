@@ -1,94 +1,114 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="novo-evento-background">
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-sm="10" size-md="8" size-lg="6" class="page-container">
+
+      <ion-col size="12" size-sm="10" size-md="7" size-lg="5" class="page-container">
 
         <div class="page-header">
           <h1>Novo Evento</h1>
           <p>Agende uma filmagem</p>
         </div>
 
-        <ion-card class="settings-card form-card">
-          <form (ngSubmit)="salvar()">
+        <ion-card class="form-card">
+          <ion-card-content>
+            <form (ngSubmit)="agendarEvento()">
 
-            <div class="input-group">
-              <ion-label class="input-label">Noivos</ion-label>
-              <div class="custom-input-wrapper">
-                <ion-icon name="people" class="input-icon"></ion-icon>
-                <ion-select
-                  name="idCliente"
-                  [(ngModel)]="idCliente"
-                  placeholder="Selecione os noivos cadastrados"
-                  cancelText="Cancelar"
-                  okText="OK"
-                  [disabled]="!clientes().length">
-                  @for (c of clientes(); track c.idCliente) {
-                    <ion-select-option [value]="c.idCliente">
-                      {{ c.nomeNoiva }} &amp; {{ c.nomeNoivo }}
-                    </ion-select-option>
-                  }
-                </ion-select>
-              </div>
-              @if (carregado() && !clientes().length) {
-                <p class="empty-state">Nenhum cliente cadastrado. Cadastre os noivos antes de agendar.</p>
-              }
-            </div>
-
-            <div class="linha-dupla">
               <div class="input-group">
-                <ion-label class="input-label">Data</ion-label>
+                <ion-label class="input-label">Noivos</ion-label>
                 <div class="custom-input-wrapper">
-                  <ion-icon name="calendar-outline" class="input-icon"></ion-icon>
-                  <ion-input type="date" name="data" [(ngModel)]="data" [min]="hoje"></ion-input>
+                  <ion-icon name="people" class="input-icon"></ion-icon>
+                  <ion-select
+                    name="idCliente"
+                    [(ngModel)]="idCliente"
+                    placeholder="Selecione os noivos cadastrados"
+                    cancelText="Cancelar"
+                    okText="OK"
+                    [disabled]="!clientes.length"
+                    required>
+                    @for (c of clientes; track c.idCliente) {
+                      <ion-select-option [value]="c.idCliente">
+                        {{ c.nomeNoiva }} &amp; {{ c.nomeNoivo }}
+                      </ion-select-option>
+                    }
+                  </ion-select>
+                </div>
+                @if (carregado && !clientes.length) {
+                  <p class="empty-state">Nenhum cliente cadastrado. Cadastre os noivos antes de agendar.</p>
+                }
+              </div>
+
+              <ion-row class="ion-no-padding date-time-row">
+                <ion-col size="6" class="col-left">
+                  <div class="input-group">
+                    <ion-label class="input-label">Data</ion-label>
+                    <div class="custom-input-wrapper">
+                      <ion-icon name="calendar-outline" class="input-icon"></ion-icon>
+                      <ion-input
+                        type="date"
+                        [(ngModel)]="data"
+                        name="data"
+                        [min]="hoje"
+                        required>
+                      </ion-input>
+                    </div>
+                  </div>
+                </ion-col>
+
+                <ion-col size="6" class="col-right">
+                  <div class="input-group">
+                    <ion-label class="input-label">Horário</ion-label>
+                    <div class="custom-input-wrapper">
+                      <ion-icon name="time-outline" class="input-icon"></ion-icon>
+                      <ion-input
+                        type="time"
+                        [(ngModel)]="horario"
+                        name="horario"
+                        required>
+                      </ion-input>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+              <div class="input-group">
+                <ion-label class="input-label">Endereço</ion-label>
+                <div class="custom-input-wrapper">
+                  <ion-icon name="location-outline" class="input-icon"></ion-icon>
+                  <ion-input
+                    type="text"
+                    placeholder="Local da cerimônia"
+                    [(ngModel)]="endereco"
+                    name="endereco"
+                    required>
+                  </ion-input>
                 </div>
               </div>
 
               <div class="input-group">
-                <ion-label class="input-label">Horário</ion-label>
+                <ion-label class="input-label">Observação</ion-label>
                 <div class="custom-input-wrapper">
-                  <ion-icon name="time-outline" class="input-icon"></ion-icon>
-                  <ion-input type="time" name="horario" [(ngModel)]="horario"></ion-input>
+                  <ion-icon name="information-circle-outline" class="input-icon"></ion-icon>
+                  <ion-input
+                    type="text"
+                    placeholder="Insira o texto..."
+                    [(ngModel)]="observacao"
+                    name="observacao">
+                  </ion-input>
                 </div>
               </div>
-            </div>
 
-            <div class="input-group">
-              <ion-label class="input-label">Endereço</ion-label>
-              <div class="custom-input-wrapper">
-                <ion-icon name="location-outline" class="input-icon"></ion-icon>
-                <ion-input
-                  type="text"
-                  name="endereco"
-                  [(ngModel)]="endereco"
-                  placeholder="Local da cerimônia"></ion-input>
+              <div class="btn-container">
+                <ion-button
+                  type="submit"
+                  class="btn-agendar"
+                  shape="round"
+                  [disabled]="!valido || salvando">
+                  AGENDAR EVENTO
+                </ion-button>
               </div>
-            </div>
 
-            <div class="input-group">
-              <ion-label class="input-label">Observação</ion-label>
-              <div class="custom-input-wrapper">
-                <ion-icon name="information-circle-outline" class="input-icon"></ion-icon>
-                <ion-textarea
-                  name="observacao"
-                  [(ngModel)]="observacao"
-                  placeholder="Insira o texto..."
-                  [autoGrow]="true"
-                  rows="1"></ion-textarea>
-              </div>
-            </div>
-
-            <div class="acoes">
-              <ion-button
-                expand="block"
-                type="submit"
-                class="btn-principal"
-                shape="round"
-                [disabled]="!valido || salvando()">
-                AGENDAR EVENTO
-              </ion-button>
-            </div>
-
-          </form>
+            </form>
+          </ion-card-content>
         </ion-card>
 
       </ion-col>

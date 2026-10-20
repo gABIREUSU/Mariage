@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true" class="clientes-background">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+
+      <ion-col size="12" size-sm="10" size-md="8" size-lg="6" class="page-container">
+
+        <div class="header-row">
+          <div class="header-titles">
+            <h1>Clientes</h1>
+            <p>Gerencie os noivos cadastrados</p>
+          </div>
+          <button class="btn-add" (click)="irParaNovoCliente()" aria-label="Novo Cliente">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </div>
+
+        <h2 class="section-subtitle">Todos os clientes</h2>
+
+        <ion-card class="clientes-card" *ngIf="clientes.length">
+          <ion-list lines="full" class="ion-no-padding">
+
+            <ion-item
+              button
+              detail="false"
+              *ngFor="let cliente of clientes; let last = last; trackBy: porId"
+              [lines]="last ? 'none' : 'full'"
+              (click)="selecionarCliente(cliente)">
+
+              <div class="icon-circle" slot="start">
+                <ion-icon name="people"></ion-icon>
+              </div>
+
+              <ion-label>
+                <h3>{{ cliente.nomes }}</h3>
+                <p>{{ cliente.email }} • {{ cliente.telefone }}</p>
+              </ion-label>
+
+              <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+            </ion-item>
+
+          </ion-list>
+        </ion-card>
+
+        <p class="empty-state" *ngIf="carregado && !clientes.length">
+          Nenhum cliente cadastrado. Toque no + para cadastrar os noivos.
+        </p>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

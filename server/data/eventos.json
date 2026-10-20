@@ -1,15 +1,5 @@
 [
   {
-    "idEvento": "eve-01",
-    "idCliente": "cli-ana-carlos",
-    "idUsuario": "usr-admin",
-    "data": "2026-09-05",
-    "horario": "10:00",
-    "endereco": "Parque Municipal, Av. Afonso Pena, s/n, Belo Horizonte",
-    "observacao": "Ensaio pré-wedding.",
-    "status": "concluido"
-  },
-  {
     "idEvento": "eve-02",
     "idCliente": "cli-beatriz-rafael",
     "idUsuario": "usr-marina",
@@ -60,23 +50,13 @@
     "status": "agendado"
   },
   {
-    "idEvento": "eve-07",
-    "idCliente": "cli-ana-carlos",
+    "idCliente": "877110ae-0c0e-4d8f-942e-de724e13c474",
     "idUsuario": "usr-admin",
-    "data": "2026-12-12",
-    "horario": "17:00",
-    "endereco": "Salão Villa Real, Rua Pernambuco, 900, Belo Horizonte",
-    "observacao": "Casamento e recepção; cobertura completa.",
-    "status": "agendado"
-  },
-  {
-    "idCliente": "cli-ana-carlos",
-    "idUsuario": "usr-admin",
-    "data": "2026-10-21",
-    "horario": "19:23",
-    "endereco": "La",
-    "observacao": "Eles gosta de jogue arroz neles",
+    "data": "4000-12-22",
+    "horario": "22:19",
+    "endereco": "Na Lua",
+    "observacao": "Ele gosta de pessego",
     "status": "agendado",
-    "idEvento": "ad4c0362-3da9-4df1-9d08-309b4b291d14"
+    "idEvento": "e7226a4e-1084-4775-94d3-e9aa5b82d897"
   }
 ]

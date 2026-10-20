@@ -1,0 +1,96 @@
+<ion-content [fullscreen]="true" class="editar-cliente-background">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+
+      <ion-col size="12" size-sm="10" size-md="7" size-lg="5" class="page-container">
+
+        <div class="page-header">
+          <h1>Editar Cliente</h1>
+          <p>Atualize os dados{{ casalTitulo ? ' de ' + casalTitulo : '' }}</p>
+        </div>
+
+        <ion-card class="form-card">
+          <ion-card-content>
+            <form (ngSubmit)="salvarAlteracoes()">
+
+              <div class="input-group">
+                <ion-label class="input-label">Nome da Noiva</ion-label>
+                <div class="custom-input-wrapper">
+                  <ion-icon name="person-outline" class="input-icon"></ion-icon>
+                  <ion-input
+                    type="text"
+                    [(ngModel)]="nomeNoiva"
+                    name="nomeNoiva"
+                    required>
+                  </ion-input>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <ion-label class="input-label">Nome do Noivo</ion-label>
+                <div class="custom-input-wrapper">
+                  <ion-icon name="person-outline" class="input-icon"></ion-icon>
+                  <ion-input
+                    type="text"
+                    [(ngModel)]="nomeNoivo"
+                    name="nomeNoivo"
+                    required>
+                  </ion-input>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <ion-label class="input-label">E-mail principal</ion-label>
+                <div class="custom-input-wrapper">
+                  <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+                  <ion-input
+                    type="email"
+                    [(ngModel)]="emailPrincipal"
+                    name="emailPrincipal"
+                    required>
+                  </ion-input>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <ion-label class="input-label">Telefone | WhatsApp</ion-label>
+                <div class="custom-input-wrapper">
+                  <ion-icon name="logo-whatsapp" class="input-icon"></ion-icon>
+                  <ion-input
+                    type="tel"
+                    [(ngModel)]="telefoneWhatsapp"
+                    (ionInput)="aoDigitarTelefone($event)"
+                    name="telefoneWhatsapp"
+                    required>
+                  </ion-input>
+                </div>
+              </div>
+
+              <div class="buttons-container">
+                <ion-button
+                  type="submit"
+                  class="btn-salvar"
+                  shape="round"
+                  [disabled]="salvando || carregando">
+                  SALVAR ALTERAÇÕES
+                </ion-button>
+
+                <ion-button
+                  type="button"
+                  class="btn-excluir"
+                  shape="round"
+                  [disabled]="salvando || carregando"
+                  (click)="excluirCliente()">
+                  <ion-icon name="trash-outline" slot="start"></ion-icon>
+                  Excluir cliente
+                </ion-button>
+              </div>
+
+            </form>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
