@@ -1,0 +1,18 @@
+// ion-card.form-card ganha da regra global de ion-card.settings-card
+ion-card.form-card {
+  padding: 20px 16px 24px;
+}
+
+.linha-dupla {
+  display: flex;
+  gap: 16px;
+
+  .input-group {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.acoes {
+  padding: 8px 12% 0;
+}

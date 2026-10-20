@@ -68,5 +68,15 @@
     "endereco": "Salão Villa Real, Rua Pernambuco, 900, Belo Horizonte",
     "observacao": "Casamento e recepção; cobertura completa.",
     "status": "agendado"
+  },
+  {
+    "idCliente": "cli-ana-carlos",
+    "idUsuario": "usr-admin",
+    "data": "2026-10-21",
+    "horario": "19:23",
+    "endereco": "La",
+    "observacao": "Eles gosta de jogue arroz neles",
+    "status": "agendado",
+    "idEvento": "ad4c0362-3da9-4df1-9d08-309b4b291d14"
   }
 ]

@@ -194,3 +194,78 @@ ion-tab-button {
   font-size: 0.85rem;
   margin: 32px 0;
 }
+
+/* ================= Tokens de formulário ================= */
+:root {
+  --app-text-label: #777777;
+  --app-field-border: #d4d4d4;
+  --app-field-text: #222222;
+  --app-field-icon: #666666;
+
+  --app-btn-bg: #000000;
+  --app-btn-bg-active: #2b2b2b;
+  --app-btn-bg-hover: #1f1f1f;
+}
+
+/* ================= Campo de formulário ================= */
+.input-group {
+  margin-bottom: 14px;
+
+  .input-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--app-text-label);
+    margin-bottom: 4px;
+    margin-left: 6px;
+  }
+
+  .custom-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--app-field-border);
+    border-radius: 16px;
+    padding: 2px 14px;
+    background: var(--app-surface);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    .input-icon {
+      font-size: 1.15rem;
+      color: var(--app-field-icon);
+      margin-right: 10px;
+    }
+
+    ion-input,
+    ion-select,
+    ion-textarea {
+      --padding-start: 0;
+      --padding-end: 0;
+      --padding-top: 8px;
+      --padding-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--app-field-text);
+    }
+
+    .toggle-password-icon {
+      font-size: 1.25rem;
+      color: var(--app-field-icon);
+      cursor: pointer;
+      margin-left: 8px;
+    }
+  }
+}
+
+/* ================= Botão principal ================= */
+/* .btn-entrar continua no HTML do login; .btn-principal é pras demais telas */
+.btn-entrar,
+.btn-principal {
+  --background: var(--app-btn-bg);
+  --background-activated: var(--app-btn-bg-active);
+  --background-hover: var(--app-btn-bg-hover);
+  --color: #ffffff;
+  --border-radius: 24px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  font-size: 0.9rem;
+  height: 44px;
+  margin-bottom: 16px;
+}

@@ -12,10 +12,13 @@ import {
   IonLabel,
   IonInput,
   IonIcon,
-  IonButton
+  IonButton,
+  ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { mail, lockClosed, eye, eyeOff } from 'ionicons/icons';
+import { UsuarioService } from '../services/usuario.service';
+import { SessaoService } from '../services/sessao.service';
 
 @Component({
   selector: 'app-login',
@@ -37,24 +40,50 @@ import { mail, lockClosed, eye, eyeOff } from 'ionicons/icons';
     IonButton
   ]
 })
-export class LoginPage implements OnInit {
+export class LoginPage{
 
   email: string = '';
   senha: string = '';
   mostrarSenha: boolean = false;
+  entrando: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService,
+    private sessao: SessaoService,
+    private toast: ToastController
+  ) {
     addIcons({ mail, lockClosed, eye, eyeOff });
   }
-
-  ngOnInit() {}
 
   alternarVisibilidadeSenha() {
     this.mostrarSenha = !this.mostrarSenha;
   }
 
-  fazerLogin() {
-    this.router.navigate(['/configuracoes']);
+  async fazerLogin() {
+    if (this.entrando) return;
+
+    const email = this.email.trim();
+    if (!email || !this.senha) {
+      await this.avisar('Informe e-mail e senha');
+      return;
+    }
+
+    this.entrando = true;
+    try {
+      const usuario = await this.usuarioService.login(email, this.senha);
+      if (!usuario) {
+        await this.avisar('E-mail ou senha inválidos');
+        return;
+      }
+      this.sessao.entrar(usuario);
+      this.senha = '';
+      await this.router.navigateByUrl('/tabs/eventos');
+    } catch {
+      await this.avisar('Não foi possível entrar. O servidor está rodando?');
+    } finally {
+      this.entrando = false;
+    }
   }
 
   esqueceuSenha() {
@@ -63,6 +92,16 @@ export class LoginPage implements OnInit {
 
   irParaCadastro() {
     console.log('Cadastre-se clicado');
+  }
+
+  private async avisar(mensagem: string) {
+    const t = await this.toast.create({
+      message: mensagem,
+      duration: 2500,
+      position: 'top',
+      color: 'danger'
+    });
+    await t.present();
   }
 
 }

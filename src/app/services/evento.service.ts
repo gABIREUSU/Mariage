@@ -24,7 +24,17 @@ export class EventoService {
     return (await this.getAll()).filter(e => e.idUsuario === idUsuario);
   }
 
+  // um evento por dia; evento cancelado não ocupa a data
+  private async garantirDataLivre(data: string, ignorarId?: string): Promise<void> {
+    const eventos = await this.getAll();
+    const ocupada = eventos.some(
+      e => e.data === data && e.status !== 'cancelado' && e.idEvento !== ignorarId,
+    );
+    if (ocupada) throw new Error('Já existe um evento nesta data');
+  }
+
   async create(dados: Omit<Evento, 'idEvento'>): Promise<Evento> {
+    if (dados.status !== 'cancelado') await this.garantirDataLivre(dados.data);
     const eventos = await this.getAll();
     const novo: Evento = { ...dados, idEvento: crypto.randomUUID() };
     eventos.push(novo);
@@ -36,7 +46,11 @@ export class EventoService {
     const eventos = await this.getAll();
     const i = eventos.findIndex(e => e.idEvento === idEvento);
     if (i === -1) throw new Error('Evento não encontrado');
-    eventos[i] = { ...eventos[i], ...dados };
+    const atualizado = { ...eventos[i], ...dados };
+    if (atualizado.status !== 'cancelado') {
+      await this.garantirDataLivre(atualizado.data, idEvento);
+    }
+    eventos[i] = atualizado;
     await this.db.saveAll(KEY, eventos);
   }
 
@@ -59,4 +73,6 @@ export class EventoService {
     );
     await this.db.saveAll(KEY, atualizados);
   }
+
+  
 }

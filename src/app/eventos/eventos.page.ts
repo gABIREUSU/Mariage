@@ -10,6 +10,7 @@ import { ClienteService } from '../services/cliente.service';
 import { EventoCardComponent } from '../components/evento-card/evento-card.component';
 import { normalizar, rotuloMes } from '../utils/datas';
 import { EventoView, montarViews } from '../utils/evento';
+import { Router } from '@angular/router';
 
 type Filtro = 'todos' | Evento['status'];
 
@@ -24,6 +25,7 @@ type Filtro = 'todos' | Evento['status'];
   ],
 })
 export class EventosPage implements ViewWillEnter {
+  private router = inject(Router);
   private eventoService = inject(EventoService);
   private clienteService = inject(ClienteService);
 
@@ -67,8 +69,9 @@ export class EventosPage implements ViewWillEnter {
     this.itens.set(montarViews(eventos, clientes));
   }
 
-  // TODO: navegar pra tela Novo Evento quando ela existir
-  novo() {}
+  novo() {
+    this.router.navigateByUrl('/tabs/eventos/novo');
+  }
 
   // TODO: navegar pra edição do evento quando a tela existir
   abrir(_evento: Evento) {}
