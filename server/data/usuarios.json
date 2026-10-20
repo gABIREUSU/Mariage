@@ -10,5 +10,29 @@
     "nome": "Marina Costa",
     "email": "marina@mariage.com",
     "senha": "123456"
+  },
+  {
+    "nome": "Fotógrafo 2",
+    "email": "bteste1792450638805@mail.com",
+    "senha": "123",
+    "idUsuario": "da937c81-ff27-4caa-a147-3f6d056aaa09"
+  },
+  {
+    "nome": "Fotógrafo 2",
+    "email": "bteste1792450730997@mail.com",
+    "senha": "123",
+    "idUsuario": "296797e2-5b68-4236-b9ca-bb25c1a05767"
+  },
+  {
+    "nome": "Fotógrafo 2",
+    "email": "bteste1792450936665@mail.com",
+    "senha": "123",
+    "idUsuario": "658f43dc-51f9-4dc4-91f1-7809f9163ed7"
+  },
+  {
+    "nome": "Fotógrafo 2",
+    "email": "bteste1792450950949@mail.com",
+    "senha": "123",
+    "idUsuario": "1aa8e46b-c0b3-4b0d-9116-79e4cec7e512"
   }
 ]

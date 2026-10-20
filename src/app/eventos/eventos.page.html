@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-sm="10" size-md="8" size-lg="6" class="page-container">
+
+        <div class="page-header page-header--action">
+          <div>
+            <h1>Eventos</h1>
+            <p>Visualize, organize e cadastre os eventos.</p>
+          </div>
+          <ion-button class="btn-add" aria-label="Novo evento" (click)="novo()">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </div>
+
+        <ion-searchbar
+          placeholder="Buscar Eventos..."
+          [debounce]="200"
+          (ionInput)="busca.set($event.detail.value ?? '')"
+        ></ion-searchbar>
+
+        <div class="filtros">
+          @for (f of filtros; track f.valor) {
+            <ion-chip [class.ativo]="filtro() === f.valor" (click)="filtro.set(f.valor)">
+              {{ f.rotulo }}
+            </ion-chip>
+          }
+        </div>
+
+        @for (g of grupos(); track g.rotulo) {
+          <div class="section-block">
+            <h2 class="section-title">{{ g.rotulo }}</h2>
+            <app-evento-card [eventos]="g.eventos" (abrir)="abrir($event)" />
+          </div>
+        } @empty {
+          <p class="empty-state">Nenhum evento encontrado.</p>
+        }
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

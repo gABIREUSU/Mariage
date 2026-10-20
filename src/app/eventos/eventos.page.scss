@@ -1,0 +1,45 @@
+.btn-add {
+  --background: #666666;
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+}
+
+ion-searchbar {
+  --background: transparent;
+  --box-shadow: none;
+  --color: var(--app-text-title);
+  --placeholder-color: var(--app-text-subtitle);
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.filtros {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 14px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+ion-chip {
+  flex: none;
+  margin: 0;
+  min-height: 36px;
+  padding: 0 18px;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  --background: #d9dadb;
+  --color: var(--app-text-item);
+
+  &.ativo {
+    --background: #1c1c1c;
+    --color: #ffffff;
+  }
+}

@@ -1,70 +1,23 @@
-<ion-content [fullscreen]="true" class="login-background">
-  <ion-grid class="ion-no-padding full-height">
-    <ion-row class="ion-justify-content-center ion-align-items-center full-height">
-      <ion-col size="11" size-sm="8" size-md="5" size-lg="4">
-        
-        <ion-card class="login-card">
-          <ion-card-content>
-            
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="eventos">
+      <ion-icon name="list-outline"></ion-icon>
+      <ion-label>Eventos</ion-label>
+    </ion-tab-button>
 
-            <div class="logo-container ion-text-center">
-              <h1 class="mariage-title">Mariage</h1>
-            </div>
+    <ion-tab-button tab="clientes">
+      <ion-icon name="person-circle"></ion-icon>
+      <ion-label>Clientes</ion-label>
+    </ion-tab-button>
 
+    <ion-tab-button tab="calendario">
+      <ion-icon name="calendar"></ion-icon>
+      <ion-label>Calendário</ion-label>
+    </ion-tab-button>
 
-            <form (ngSubmit)="fazerLogin()">
-              
-              <div class="input-group">
-                <ion-label class="input-label">Email</ion-label>
-                <div class="custom-input-wrapper">
-                  <ion-icon name="mail" class="input-icon"></ion-icon>
-                  <ion-input 
-                    type="email" 
-                    [(ngModel)]="email" 
-                    name="email"
-                    required>
-                  </ion-input>
-                </div>
-              </div>
-
-              <div class="input-group">
-                <ion-label class="input-label">Senha</ion-label>
-                <div class="custom-input-wrapper">
-                  <ion-icon name="lock-closed" class="input-icon"></ion-icon>
-                  <ion-input 
-                    [type]="mostrarSenha ? 'text' : 'password'" 
-                    [(ngModel)]="senha" 
-                    name="senha"
-                    required>
-                  </ion-input>
-                  <ion-icon 
-                    [name]="mostrarSenha ? 'eye-off' : 'eye'" 
-                    class="toggle-password-icon"
-                    (click)="alternarVisibilidadeSenha()">
-                  </ion-icon>
-                </div>
-              </div>
-
-
-              <div class="forgot-password ion-text-end">
-                <a (click)="esqueceuSenha()">Esqueceu a senha?</a>
-              </div>
-
-              <ion-button expand="block" type="submit" class="btn-entrar" shape="round">
-                ENTRAR
-              </ion-button>
-
-
-              <div class="register-container ion-text-center">
-                <span>Não tem uma conta? <a (click)="irParaCadastro()">Cadastre-se</a></span>
-              </div>
-
-            </form>
-
-          </ion-card-content>
-        </ion-card>
-
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+    <ion-tab-button tab="configuracoes">
+      <ion-icon name="settings"></ion-icon>
+      <ion-label>Config</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
