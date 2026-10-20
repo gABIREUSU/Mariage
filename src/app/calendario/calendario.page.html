@@ -24,7 +24,7 @@
           <h2 class="section-title">{{ titulo() }}</h2>
 
           @if (lista().length) {
-            <app-evento-card [eventos]="lista()" (abrir)="abrir($event)" />
+            <app-evento-card [itens]="lista()" (abrir)="abrir($event)" />
           } @else {
             <p class="empty-state">Nenhum evento.</p>
           }

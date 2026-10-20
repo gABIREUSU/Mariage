@@ -30,7 +30,7 @@
         @for (g of grupos(); track g.rotulo) {
           <div class="section-block">
             <h2 class="section-title">{{ g.rotulo }}</h2>
-            <app-evento-card [eventos]="g.eventos" (abrir)="abrir($event)" />
+            <app-evento-card [itens]="g.itens" (abrir)="abrir($event)" />
           </div>
         } @empty {
           <p class="empty-state">Nenhum evento encontrado.</p>
