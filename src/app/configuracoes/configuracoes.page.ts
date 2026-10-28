@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -13,7 +13,10 @@ import {
   IonLabel,
   IonIcon,
   IonFooter,
-  IonToolbar
+  IonToolbar,
+  AlertController,
+  NavController,
+  ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -29,6 +32,7 @@ import {
   listOutline,
   settings
 } from 'ionicons/icons';
+import { SessaoService } from '../services/sessao.service';
 
 @Component({
   selector: 'app-configuracoes',
@@ -52,7 +56,14 @@ import {
     IonToolbar
   ]
 })
-export class ConfiguracoesPage implements OnInit {
+export class ConfiguracoesPage {
+
+  private sessao = inject(SessaoService);
+  private nav = inject(NavController);
+  private alert = inject(AlertController);
+  private toast = inject(ToastController);
+
+  saindo: boolean = false;
 
   constructor(private router: Router) {
     addIcons({
@@ -70,14 +81,44 @@ export class ConfiguracoesPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
-
   abrirOpcao(opcao: string) {
     console.log('Abrindo configuração:', opcao);
   }
 
-  sairDaConta() {
-    this.router.navigate(['/login']);
+  async sairDaConta() {
+    if (this.saindo) return;
+
+    const alerta = await this.alert.create({
+      header: 'Sair da conta',
+      message: 'Você precisará entrar novamente para acessar o app.',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Sair',
+          role: 'destructive',
+          handler: () => { void this.confirmarSaida(); }
+        }
+      ]
+    });
+    await alerta.present();
+  }
+
+  private async confirmarSaida() {
+    this.saindo = true;
+    try {
+      await this.sessao.sair();
+      await this.nav.navigateRoot('/login');
+    } catch {
+      const t = await this.toast.create({
+        message: 'Não foi possível sair. Tente novamente',
+        duration: 2500,
+        position: 'top',
+        color: 'danger'
+      });
+      await t.present();
+    } finally {
+      this.saindo = false;
+    }
   }
 
   navegarTab(rota: string) {

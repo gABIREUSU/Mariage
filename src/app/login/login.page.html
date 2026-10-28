@@ -2,25 +2,38 @@
   <ion-grid class="ion-no-padding full-height">
     <ion-row class="ion-justify-content-center ion-align-items-center full-height">
       <ion-col size="11" size-sm="8" size-md="5" size-lg="4">
-        
+
         <ion-card class="login-card">
           <ion-card-content>
-            
 
             <div class="logo-container ion-text-center">
               <h1 class="mariage-title">Mariage</h1>
             </div>
 
+            <form (ngSubmit)="enviar()">
 
-            <form (ngSubmit)="fazerLogin()">
-              
+              @if (modoCadastro) {
+                <div class="input-group">
+                  <ion-label class="input-label">Nome</ion-label>
+                  <div class="custom-input-wrapper">
+                    <ion-icon name="person-outline" class="input-icon"></ion-icon>
+                    <ion-input
+                      type="text"
+                      [(ngModel)]="nome"
+                      name="nome"
+                      required>
+                    </ion-input>
+                  </div>
+                </div>
+              }
+
               <div class="input-group">
                 <ion-label class="input-label">Email</ion-label>
                 <div class="custom-input-wrapper">
                   <ion-icon name="mail" class="input-icon"></ion-icon>
-                  <ion-input 
-                    type="email" 
-                    [(ngModel)]="email" 
+                  <ion-input
+                    type="email"
+                    [(ngModel)]="email"
                     name="email"
                     required>
                   </ion-input>
@@ -31,32 +44,40 @@
                 <ion-label class="input-label">Senha</ion-label>
                 <div class="custom-input-wrapper">
                   <ion-icon name="lock-closed" class="input-icon"></ion-icon>
-                  <ion-input 
-                    [type]="mostrarSenha ? 'text' : 'password'" 
-                    [(ngModel)]="senha" 
+                  <ion-input
+                    [type]="mostrarSenha ? 'text' : 'password'"
+                    [(ngModel)]="senha"
                     name="senha"
                     required>
                   </ion-input>
-                  <ion-icon 
-                    [name]="mostrarSenha ? 'eye-off' : 'eye'" 
+                  <ion-icon
+                    [name]="mostrarSenha ? 'eye-off' : 'eye'"
                     class="toggle-password-icon"
                     (click)="alternarVisibilidadeSenha()">
                   </ion-icon>
                 </div>
               </div>
 
+              @if (!modoCadastro) {
+                <div class="forgot-password ion-text-end">
+                  <a (click)="esqueceuSenha()">Esqueceu a senha?</a>
+                </div>
+              }
 
-              <div class="forgot-password ion-text-end">
-                <a (click)="esqueceuSenha()">Esqueceu a senha?</a>
-              </div>
-
-              <ion-button expand="block" type="submit" class="btn-entrar" shape="round">
-                ENTRAR
+              <ion-button
+                expand="block"
+                type="submit"
+                class="btn-entrar"
+                shape="round"
+                [disabled]="enviando">
+                {{ modoCadastro ? 'CRIAR CONTA' : 'ENTRAR' }}
               </ion-button>
 
-
               <div class="register-container ion-text-center">
-                <span>Não tem uma conta? <a (click)="irParaCadastro()">Cadastre-se</a></span>
+                <span>
+                  {{ modoCadastro ? 'Já tem uma conta?' : 'Não tem uma conta?' }}
+                  <a (click)="alternarModo()">{{ modoCadastro ? 'Entrar' : 'Cadastre-se' }}</a>
+                </span>
               </div>
 
             </form>

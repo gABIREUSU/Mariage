@@ -1,50 +1,49 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { Usuario } from '../models/usuario.model';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';
+import { AuthService } from './auth.service';
 
-const KEY = 'mariage.sessao';
-
-// só o necessário: a senha NÃO vai pra sessão
-interface SessaoSalva {
-  idUsuario: string;
+export interface UsuarioSessao {
+  idUsuario: string; // uid do Firebase
   nome: string;
+  email: string;
+}
+
+function mapear(u: User): UsuarioSessao {
+  const email = u.email ?? '';
+  return {
+    idUsuario: u.uid,
+    nome: u.displayName || email.split('@')[0] || 'Usuário',
+    email
+  };
 }
 
 @Injectable({ providedIn: 'root' })
 export class SessaoService {
-  private _usuario = signal<SessaoSalva | null>(this.ler());
+  private auth = inject(Auth);
+  private authService = inject(AuthService);
 
+  private _usuario = signal<UsuarioSessao | null>(null);
   readonly usuario = this._usuario.asReadonly();
   readonly logado = computed(() => this._usuario() !== null);
 
+  constructor() {
+    onAuthStateChanged(this.auth, user => {
+      this._usuario.set(user ? mapear(user) : null);
+    });
+  }
+
+  // o currentUser cobre a janela logo depois do login, antes do evento chegar
   get idUsuario(): string | null {
-    return this._usuario()?.idUsuario ?? null;
+    return this._usuario()?.idUsuario ?? this.auth.currentUser?.uid ?? null;
   }
 
-  entrar(u: Usuario): void {
-    const dados: SessaoSalva = { idUsuario: u.idUsuario, nome: u.nome };
-    this._usuario.set(dados);
-    try {
-      sessionStorage.setItem(KEY, JSON.stringify(dados));
-    } catch {
-      // storage indisponível: a sessão vale só enquanto o app estiver aberto
-    }
+  // atualizar o nome (displayName) não dispara o onAuthStateChanged
+  sincronizar(): void {
+    const u = this.auth.currentUser;
+    this._usuario.set(u ? mapear(u) : null);
   }
 
-  sair(): void {
-    this._usuario.set(null);
-    try {
-      sessionStorage.removeItem(KEY);
-    } catch {
-      // ignora
-    }
-  }
-
-  private ler(): SessaoSalva | null {
-    try {
-      const raw = sessionStorage.getItem(KEY);
-      return raw ? (JSON.parse(raw) as SessaoSalva) : null;
-    } catch {
-      return null;
-    }
+  sair(): Promise<void> {
+    return this.authService.sair();
   }
 }
