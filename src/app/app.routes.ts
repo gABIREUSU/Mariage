@@ -1,5 +1,14 @@
 import { Routes } from '@angular/router';
 import { authGuard, guestGuard } from './guards/auth.guard';
+import { environment } from '../environments/environment';
+
+const rotasDev: Routes = environment.production ? [] : [
+  {
+    path: 'dev/migracao',
+    canActivate: [authGuard],
+    loadComponent: () => import('./dev-migracao/dev-migracao.page').then(m => m.DevMigracaoPage),
+  },
+];
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -54,4 +63,5 @@ export const routes: Routes = [
   { path: 'novo-cliente', redirectTo: '/tabs/clientes/novo', pathMatch: 'full' },
   { path: 'editar-cliente', redirectTo: '/tabs/clientes', pathMatch: 'full' },
   { path: 'clientes', redirectTo: '/tabs/clientes', pathMatch: 'full' },
+  ...rotasDev,
 ];
