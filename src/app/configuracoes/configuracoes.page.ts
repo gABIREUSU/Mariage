@@ -33,7 +33,6 @@ import {
   settings
 } from 'ionicons/icons';
 import { SessaoService } from '../services/sessao.service';
-
 @Component({
   selector: 'app-configuracoes',
   templateUrl: './configuracoes.page.html',
@@ -57,14 +56,11 @@ import { SessaoService } from '../services/sessao.service';
   ]
 })
 export class ConfiguracoesPage {
-
   private sessao = inject(SessaoService);
   private nav = inject(NavController);
   private alert = inject(AlertController);
   private toast = inject(ToastController);
-
   saindo: boolean = false;
-
   constructor(private router: Router) {
     addIcons({
       personCircle,
@@ -80,14 +76,11 @@ export class ConfiguracoesPage {
       settings
     });
   }
-
   abrirOpcao(opcao: string) {
     console.log('Abrindo configuração:', opcao);
   }
-
   async sairDaConta() {
     if (this.saindo) return;
-
     const alerta = await this.alert.create({
       header: 'Sair da conta',
       message: 'Você precisará entrar novamente para acessar o app.',
@@ -102,7 +95,6 @@ export class ConfiguracoesPage {
     });
     await alerta.present();
   }
-
   private async confirmarSaida() {
     this.saindo = true;
     try {
@@ -120,9 +112,7 @@ export class ConfiguracoesPage {
       this.saindo = false;
     }
   }
-
   navegarTab(rota: string) {
     this.router.navigate([rota]);
   }
-
 }

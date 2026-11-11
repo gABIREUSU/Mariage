@@ -1,28 +1,23 @@
 .novo-evento-background {
   --background: #efefef;
 }
-
 .page-container {
   padding: 36px 22px 24px 22px;
 }
-
 .page-header {
   margin-bottom: 24px;
-
   h1 {
     font-size: 1.65rem;
     font-weight: 400;
     color: #3b3b3b;
     margin: 0 0 4px 0;
   }
-
   p {
     font-size: 0.78rem;
     color: #777777;
     margin: 0;
   }
 }
-
 .form-card {
   background: #ffffff;
   border-radius: 22px;
@@ -30,22 +25,17 @@
   margin: 0;
   padding: 12px 6px;
 }
-
 .date-time-row {
   justify-content: space-between;
-
   .col-left {
     padding-right: 12px;
   }
-
   .col-right {
     padding-left: 12px;
   }
 }
-
 .input-group {
   margin-bottom: 16px;
-
   .input-label {
     display: block;
     font-size: 0.8rem;
@@ -53,7 +43,6 @@
     margin-bottom: 6px;
     margin-left: 6px;
   }
-
   .custom-input-wrapper {
     display: flex;
     align-items: center;
@@ -61,14 +50,12 @@
     border-radius: 16px;
     padding: 2px 14px;
     background: #ffffff;
-
     .input-icon {
       font-size: 1.15rem;
       color: #c4c4c4;
       margin-right: 10px;
       flex-shrink: 0;
     }
-
     ion-input {
       --padding-start: 0;
       --padding-end: 0;
@@ -81,14 +68,12 @@
     }
   }
 }
-
 .btn-container {
   display: flex;
   justify-content: center;
   margin-top: 26px;
   margin-bottom: 8px;
 }
-
 .btn-agendar {
   width: 82%;
   --background: #2f3237;

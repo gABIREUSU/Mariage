@@ -5,7 +5,6 @@ import { heart } from 'ionicons/icons';
 import { Evento } from '../../models/evento.model';
 import { EventoView } from '../../utils/evento';
 import { dataCurta } from '../../utils/datas';
-
 @Component({
   selector: 'app-evento-card',
   standalone: true,
@@ -47,8 +46,6 @@ import { dataCurta } from '../../utils/datas';
 export class EventoCardComponent {
   itens = input.required<EventoView[]>();
   @Output() abrir = new EventEmitter<Evento>();
-
   dataCurta = dataCurta;
-
   constructor() { addIcons({ heart }); }
 }

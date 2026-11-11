@@ -4,7 +4,6 @@ ion-grid.full-height {
   flex-direction: column;
   justify-content: center;
 }
-
 ion-row.full-height {
   width: 100%;
   flex: 1;
@@ -12,7 +11,6 @@ ion-row.full-height {
   align-items: center;
   justify-content: center;
 }
-
 .login-card {
   background: #ffffff;
   border-radius: 22px;
@@ -20,11 +18,9 @@ ion-row.full-height {
   padding: 20px 8px;
   margin: 0;
 }
-
 .logo-container {
   margin-top: 8px;
   margin-bottom: 28px;
-
   .mariage-title {
     font-family: 'Great Vibes', cursive, serif;
     font-size: 3.1rem;
@@ -33,11 +29,9 @@ ion-row.full-height {
     margin: 0;
   }
 }
-
 .forgot-password {
   margin-top: -4px;
   margin-bottom: 22px;
-
   a {
     font-size: 0.7rem;
     color: #999999;
@@ -45,11 +39,9 @@ ion-row.full-height {
     cursor: pointer;
   }
 }
-
 .register-container {
   font-size: 0.68rem;
   color: #999999;
-
   a {
     color: #888888;
     text-decoration: underline;

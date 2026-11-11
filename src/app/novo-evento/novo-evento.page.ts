@@ -31,7 +31,6 @@ import { ClienteService } from '../services/cliente.service';
 import { EventoService } from '../services/evento.service';
 import { SessaoService } from '../services/sessao.service';
 import { hojeISO } from '../utils/datas';
-
 @Component({
   selector: 'app-novo-evento',
   templateUrl: './novo-evento.page.html',
@@ -55,19 +54,15 @@ import { hojeISO } from '../utils/datas';
   ]
 })
 export class NovoEventoPage implements ViewWillEnter {
-
   clientes: Cliente[] = [];
   carregado: boolean = false;
   salvando: boolean = false;
-
   idCliente: string = '';
   data: string = '';
   horario: string = '';
   endereco: string = '';
   observacao: string = '';
-
   readonly hoje: string = hojeISO();
-
   constructor(
     private router: Router,
     private clienteService: ClienteService,
@@ -83,7 +78,6 @@ export class NovoEventoPage implements ViewWillEnter {
       informationCircleOutline
     });
   }
-
   async ionViewWillEnter() {
     this.limpar();
     try {
@@ -94,14 +88,11 @@ export class NovoEventoPage implements ViewWillEnter {
       this.carregado = true;
     }
   }
-
   get valido(): boolean {
     return !!(this.idCliente && this.data && this.horario && this.endereco.trim());
   }
-
   async agendarEvento() {
     if (!this.valido || this.salvando) return;
-
     const idUsuario = this.sessao.idUsuario;
     if (!idUsuario) {
       await this.router.navigateByUrl('/login');
@@ -111,7 +102,6 @@ export class NovoEventoPage implements ViewWillEnter {
       await this.avisar('A data não pode ser no passado');
       return;
     }
-
     this.salvando = true;
     try {
       await this.eventoService.create({
@@ -136,7 +126,6 @@ export class NovoEventoPage implements ViewWillEnter {
       this.salvando = false;
     }
   }
-
   private limpar() {
     this.idCliente = '';
     this.data = '';
@@ -144,7 +133,6 @@ export class NovoEventoPage implements ViewWillEnter {
     this.endereco = '';
     this.observacao = '';
   }
-
   private async avisar(mensagem: string, cor: 'success' | 'danger' = 'danger') {
     const t = await this.toast.create({
       message: mensagem,
@@ -154,5 +142,4 @@ export class NovoEventoPage implements ViewWillEnter {
     });
     await t.present();
   }
-
 }

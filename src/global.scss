@@ -1,82 +1,51 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
-/* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
-
-/* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
-
-/* ================= Tokens ================= */
 :root {
   --app-bg: #efefef;
   --app-surface: #ffffff;
-
   --app-text-title: #333333;
   --app-text-subtitle: #8c8c8c;
   --app-text-section: #555555;
   --app-text-item: #444444;
   --app-text-hint: #999999;
   --app-icon: #555555;
-
   --app-divider: #f0f0f0;
   --app-icon-bg: #f4f5f7;
-
   --app-card-radius: 18px;
   --app-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --app-page-padding: 28px 20px 24px 20px;
 }
-
-/* ================= Base ================= */
 ion-content {
   --background: var(--app-bg);
 }
-
-/* ================= Layout de página ================= */
-/* .config-container é alias pra não mexer no HTML dele */
 .page-container,
 .config-container {
   padding: var(--app-page-padding);
 }
-
 .page-header {
   margin-bottom: 18px;
-
   h1 {
     font-size: 1.65rem;
     font-weight: 400;
     color: var(--app-text-title);
     margin: 0 0 4px 0;
   }
-
   p {
     font-size: 0.78rem;
     color: var(--app-text-subtitle);
     margin: 0;
   }
 }
-
 .section-block {
   margin-bottom: 18px;
-
   .section-title {
     font-size: 0.9rem;
     font-weight: 400;
@@ -84,28 +53,21 @@ ion-content {
     margin: 0 0 6px 4px;
   }
 }
-
-/* ================= Card de lista ================= */
-/* "ion-card." na frente aumenta a especificidade: os estilos do próprio
-   ion-card são injetados depois do global e ganhariam o empate */
 ion-card.settings-card {
   background: var(--app-surface);
   border-radius: var(--app-card-radius);
   box-shadow: var(--app-card-shadow);
   margin: 0;
   padding: 4px 0;
-
   ion-list {
     background: transparent;
   }
-
   ion-item {
     --background: var(--app-surface);
     --padding-start: 14px;
     --inner-padding-end: 14px;
     --min-height: 68px;
     --border-color: var(--app-divider);
-
     .icon-circle {
       width: 42px;
       height: 42px;
@@ -115,23 +77,19 @@ ion-card.settings-card {
       align-items: center;
       justify-content: center;
       margin-right: 14px;
-
       ion-icon {
         font-size: 1.35rem;
         color: var(--app-icon);
       }
     }
-
     ion-label {
       margin: 12px 0;
-
       h3 {
         font-size: 0.92rem;
         font-weight: 400;
         color: var(--app-text-item);
         margin: 0 0 3px 0;
       }
-
       p {
         font-size: 0.72rem;
         color: var(--app-text-hint);
@@ -139,23 +97,18 @@ ion-card.settings-card {
         white-space: normal;
       }
     }
-
     .arrow-icon {
       font-size: 1.2rem;
       color: var(--app-text-item);
     }
   }
 }
-
-/* ================= Tokens da navbar ================= */
 :root {
   --app-nav-bg: #ffffff;
   --app-nav-border: #e5e5e5;
   --app-nav-color: #666666;
   --app-nav-active: #3b82f6;
 }
-
-/* ================= Navbar do app (ion-tabs) ================= */
 ion-tab-bar {
   --background: var(--app-nav-bg);
   --border: 1px solid var(--app-nav-border);
@@ -164,53 +117,41 @@ ion-tab-bar {
   justify-content: center;
   min-height: 60px;
 }
-
 ion-tab-button {
   --color: var(--app-nav-color);
   --color-selected: var(--app-nav-active);
   max-width: 150px;
-
   ion-icon {
     font-size: 1.35rem;
     margin-bottom: 3px;
   }
-
   ion-label {
     font-size: 0.72rem;
   }
 }
-
-/* ================= Extras de página ================= */
 .page-header--action {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
-
 .empty-state {
   text-align: center;
   color: var(--app-text-hint);
   font-size: 0.85rem;
   margin: 32px 0;
 }
-
-/* ================= Tokens de formulário ================= */
 :root {
   --app-text-label: #777777;
   --app-field-border: #d4d4d4;
   --app-field-text: #222222;
   --app-field-icon: #666666;
-
   --app-btn-bg: #000000;
   --app-btn-bg-active: #2b2b2b;
   --app-btn-bg-hover: #1f1f1f;
 }
-
-/* ================= Campo de formulário ================= */
 .input-group {
   margin-bottom: 14px;
-
   .input-label {
     display: block;
     font-size: 0.8rem;
@@ -218,7 +159,6 @@ ion-tab-button {
     margin-bottom: 4px;
     margin-left: 6px;
   }
-
   .custom-input-wrapper {
     display: flex;
     align-items: center;
@@ -227,13 +167,11 @@ ion-tab-button {
     padding: 2px 14px;
     background: var(--app-surface);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
     .input-icon {
       font-size: 1.15rem;
       color: var(--app-field-icon);
       margin-right: 10px;
     }
-
     ion-input,
     ion-select,
     ion-textarea {
@@ -244,7 +182,6 @@ ion-tab-button {
       font-size: 0.95rem;
       color: var(--app-field-text);
     }
-
     .toggle-password-icon {
       font-size: 1.25rem;
       color: var(--app-field-icon);
@@ -253,9 +190,6 @@ ion-tab-button {
     }
   }
 }
-
-/* ================= Botão principal ================= */
-/* .btn-entrar continua no HTML do login; .btn-principal é pras demais telas */
 .btn-entrar,
 .btn-principal {
   --background: var(--app-btn-bg);

@@ -1,18 +1,14 @@
 <ion-content [fullscreen]="true" class="novo-cliente-background">
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
-
       <ion-col size="12" size-sm="10" size-md="7" size-lg="5" class="page-container">
-
         <div class="page-header">
           <h1>Novo Cliente</h1>
           <p>Cadastre os noivos para o serviço de filmagem</p>
         </div>
-
         <ion-card class="form-card">
           <ion-card-content>
             <form (ngSubmit)="cadastrarCliente()">
-
               <div class="input-group">
                 <ion-label class="input-label">Nome da Noiva</ion-label>
                 <div class="custom-input-wrapper">
@@ -26,7 +22,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="input-group">
                 <ion-label class="input-label">Nome do Noivo</ion-label>
                 <div class="custom-input-wrapper">
@@ -40,7 +35,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="input-group">
                 <ion-label class="input-label">E-mail principal</ion-label>
                 <div class="custom-input-wrapper">
@@ -54,7 +48,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="input-group">
                 <ion-label class="input-label">Telefone | WhatsApp</ion-label>
                 <div class="custom-input-wrapper">
@@ -69,17 +62,14 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="btn-container">
                 <ion-button type="submit" class="btn-cadastrar" shape="round" [disabled]="salvando">
                   CADASTRAR CLIENTE
                 </ion-button>
               </div>
-
             </form>
           </ion-card-content>
         </ion-card>
-
       </ion-col>
     </ion-row>
   </ion-grid>

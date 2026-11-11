@@ -20,7 +20,6 @@ import { mail, lockClosed, eye, eyeOff, personOutline } from 'ionicons/icons';
 import { AuthService } from '../services/auth.service';
 import { SessaoService } from '../services/sessao.service';
 import { emailValido } from '../utils/contato';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -42,14 +41,12 @@ import { emailValido } from '../utils/contato';
   ]
 })
 export class LoginPage {
-
   nome: string = '';
   email: string = '';
   senha: string = '';
   mostrarSenha: boolean = false;
   modoCadastro: boolean = false;
   enviando: boolean = false;
-
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -58,19 +55,15 @@ export class LoginPage {
   ) {
     addIcons({ mail, lockClosed, eye, eyeOff, personOutline });
   }
-
   alternarVisibilidadeSenha() {
     this.mostrarSenha = !this.mostrarSenha;
   }
-
   alternarModo() {
     this.modoCadastro = !this.modoCadastro;
     this.senha = '';
   }
-
   async enviar() {
     if (this.enviando) return;
-
     const email = this.email.trim();
     if (this.modoCadastro && !this.nome.trim()) {
       await this.avisar('Informe o seu nome');
@@ -88,7 +81,6 @@ export class LoginPage {
       await this.avisar('A senha precisa ter pelo menos 6 caracteres');
       return;
     }
-
     this.enviando = true;
     try {
       if (this.modoCadastro) {
@@ -100,7 +92,6 @@ export class LoginPage {
       this.nome = '';
       this.senha = '';
       this.modoCadastro = false;
-      // tira o foco do botão antes de a tela de login ser escondida
       (document.activeElement as HTMLElement | null)?.blur();
       await this.router.navigateByUrl('/tabs/eventos', { replaceUrl: true });
     } catch (e) {
@@ -109,7 +100,6 @@ export class LoginPage {
       this.enviando = false;
     }
   }
-
   async esqueceuSenha() {
     const email = this.email.trim();
     if (!emailValido(email)) {
@@ -126,7 +116,6 @@ export class LoginPage {
       await this.avisar(this.authService.mensagemDeErro(e));
     }
   }
-
   private async avisar(mensagem: string, cor: 'success' | 'danger' = 'danger') {
     const t = await this.toast.create({
       message: mensagem,
@@ -136,5 +125,4 @@ export class LoginPage {
     });
     await t.present();
   }
-
 }

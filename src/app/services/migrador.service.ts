@@ -3,24 +3,19 @@ import { Firestore, doc, runTransaction, setDoc } from '@angular/fire/firestore'
 import { Cliente } from '../models/cliente.model';
 import { Evento } from '../models/evento.model';
 import { DatabaseService } from './database.service';
-
 export interface ResultadoMigracao {
   total: number;
   gravados: number;
   falhas: { id: string; motivo: string }[];
 }
-
-// TEMPORÁRIO: serve só durante a migração para o Firestore (sai na fase 3)
 @Injectable({ providedIn: 'root' })
 export class MigradorService {
   private db = inject(DatabaseService);
   private firestore = inject(Firestore);
   private injector = inject(Injector);
-
   async migrarClientes(): Promise<ResultadoMigracao> {
     const antigos = await this.db.getAll<Cliente>('clientes');
     const resultado: ResultadoMigracao = { total: antigos.length, gravados: 0, falhas: [] };
-
     for (const c of antigos) {
       try {
         const limpo: Cliente = {
@@ -43,12 +38,9 @@ export class MigradorService {
     }
     return resultado;
   }
-
-  // copia os eventos mantendo os ids e cria a trava de data de cada evento não cancelado
   async migrarEventos(): Promise<ResultadoMigracao> {
     const antigos = await this.db.getAll<Evento>('eventos');
     const resultado: ResultadoMigracao = { total: antigos.length, gravados: 0, falhas: [] };
-
     for (const e of antigos) {
       try {
         const limpo: Evento = {
@@ -61,11 +53,9 @@ export class MigradorService {
           observacao: e.observacao ?? '',
           status: e.status
         };
-
         await runInInjectionContext(this.injector, () =>
           runTransaction(this.firestore, async tx => {
             const eventoRef = this.ref('eventos', limpo.idEvento);
-
             if (limpo.status !== 'cancelado') {
               const travaRef = this.ref('agenda', limpo.data);
               const trava = await tx.get(travaRef);
@@ -91,7 +81,6 @@ export class MigradorService {
     }
     return resultado;
   }
-
   private ref(colecao: string, id: string) {
     return runInInjectionContext(this.injector, () => doc(this.firestore, colecao, id));
   }

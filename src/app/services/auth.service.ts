@@ -10,24 +10,19 @@ import {
   updateProfile
 } from '@angular/fire/auth';
 import { firstValueFrom } from 'rxjs';
-
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private auth = inject(Auth);
   private injector = inject(Injector);
-
-  // Espera o Firebase restaurar a sessão (importante no F5) e devolve o usuário ou null
   usuarioAtual(): Promise<User | null> {
     return firstValueFrom(this.dentro(() => authState(this.auth)));
   }
-
   async entrar(email: string, senha: string): Promise<User> {
     const cred = await this.dentro(() =>
       signInWithEmailAndPassword(this.auth, email.trim(), senha)
     );
     return cred.user;
   }
-
   async cadastrar(nome: string, email: string, senha: string): Promise<User> {
     const cred = await this.dentro(() =>
       createUserWithEmailAndPassword(this.auth, email.trim(), senha)
@@ -35,19 +30,15 @@ export class AuthService {
     try {
       await this.dentro(() => updateProfile(cred.user, { displayName: nome.trim() }));
     } catch {
-      // a conta já foi criada; sem nome, a sessão usa o início do e-mail
     }
     return cred.user;
   }
-
   sair(): Promise<void> {
     return this.dentro(() => signOut(this.auth));
   }
-
   recuperarSenha(email: string): Promise<void> {
     return this.dentro(() => sendPasswordResetEmail(this.auth, email.trim()));
   }
-
   mensagemDeErro(e: unknown): string {
     const code = (e as { code?: string })?.code ?? '';
     if (code.startsWith('auth/api-key-not-valid')) {
@@ -79,7 +70,6 @@ export class AuthService {
         return 'Não foi possível concluir. Tente novamente';
     }
   }
-
   private dentro<T>(fn: () => T): T {
     return runInInjectionContext(this.injector, fn);
   }

@@ -1,18 +1,14 @@
 <ion-content [fullscreen]="true" class="novo-evento-background">
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
-
       <ion-col size="12" size-sm="10" size-md="7" size-lg="5" class="page-container">
-
         <div class="page-header">
           <h1>Novo Evento</h1>
           <p>Agende uma filmagem</p>
         </div>
-
         <ion-card class="form-card">
           <ion-card-content>
             <form (ngSubmit)="agendarEvento()">
-
               <div class="input-group">
                 <ion-label class="input-label">Noivos</ion-label>
                 <div class="custom-input-wrapper">
@@ -36,7 +32,6 @@
                   <p class="empty-state">Nenhum cliente cadastrado. Cadastre os noivos antes de agendar.</p>
                 }
               </div>
-
               <ion-row class="ion-no-padding date-time-row">
                 <ion-col size="6" class="col-left">
                   <div class="input-group">
@@ -53,7 +48,6 @@
                     </div>
                   </div>
                 </ion-col>
-
                 <ion-col size="6" class="col-right">
                   <div class="input-group">
                     <ion-label class="input-label">Horário</ion-label>
@@ -69,7 +63,6 @@
                   </div>
                 </ion-col>
               </ion-row>
-
               <div class="input-group">
                 <ion-label class="input-label">Endereço</ion-label>
                 <div class="custom-input-wrapper">
@@ -83,7 +76,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="input-group">
                 <ion-label class="input-label">Observação</ion-label>
                 <div class="custom-input-wrapper">
@@ -96,7 +88,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="btn-container">
                 <ion-button
                   type="submit"
@@ -106,11 +97,9 @@
                   AGENDAR EVENTO
                 </ion-button>
               </div>
-
             </form>
           </ion-card-content>
         </ion-card>
-
       </ion-col>
     </ion-row>
   </ion-grid>

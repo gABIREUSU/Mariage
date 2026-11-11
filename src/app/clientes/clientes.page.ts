@@ -18,14 +18,12 @@ import { addIcons } from 'ionicons';
 import { add, people, chevronForwardOutline } from 'ionicons/icons';
 import { ClienteService } from '../services/cliente.service';
 import { primeiroNome } from '../utils/contato';
-
 interface ClienteCasal {
   idCliente: string;
   nomes: string;
   email: string;
   telefone: string;
 }
-
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.page.html',
@@ -45,10 +43,8 @@ interface ClienteCasal {
   ]
 })
 export class ClientesPage implements ViewWillEnter {
-
   clientes: ClienteCasal[] = [];
   carregado: boolean = false;
-
   constructor(
     private router: Router,
     private clienteService: ClienteService,
@@ -56,8 +52,6 @@ export class ClientesPage implements ViewWillEnter {
   ) {
     addIcons({ add, people, chevronForwardOutline });
   }
-
-  // recarrega toda vez que a tela aparece (ao voltar do cadastro ou da edição)
   async ionViewWillEnter() {
     try {
       const todos = await this.clienteService.getAll();
@@ -75,15 +69,12 @@ export class ClientesPage implements ViewWillEnter {
       this.carregado = true;
     }
   }
-
   irParaNovoCliente() {
     this.router.navigateByUrl('/tabs/clientes/novo');
   }
-
   selecionarCliente(cliente: ClienteCasal) {
     this.router.navigateByUrl('/tabs/clientes/editar/' + cliente.idCliente);
   }
-
   private async avisar(mensagem: string) {
     const t = await this.toast.create({
       message: mensagem,
@@ -93,7 +84,6 @@ export class ClientesPage implements ViewWillEnter {
     });
     await t.present();
   }
-
     porId(_: number, c: ClienteCasal) {
     return c.idCliente;
   }

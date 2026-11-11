@@ -1,18 +1,14 @@
 <ion-content [fullscreen]="true" class="editar-cliente-background">
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
-
       <ion-col size="12" size-sm="10" size-md="7" size-lg="5" class="page-container">
-
         <div class="page-header">
           <h1>Editar Cliente</h1>
           <p>Atualize os dados{{ casalTitulo ? ' de ' + casalTitulo : '' }}</p>
         </div>
-
         <ion-card class="form-card">
           <ion-card-content>
             <form (ngSubmit)="salvarAlteracoes()">
-
               <div class="input-group">
                 <ion-label class="input-label">Nome da Noiva</ion-label>
                 <div class="custom-input-wrapper">
@@ -25,7 +21,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="input-group">
                 <ion-label class="input-label">Nome do Noivo</ion-label>
                 <div class="custom-input-wrapper">
@@ -38,7 +33,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="input-group">
                 <ion-label class="input-label">E-mail principal</ion-label>
                 <div class="custom-input-wrapper">
@@ -51,7 +45,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="input-group">
                 <ion-label class="input-label">Telefone | WhatsApp</ion-label>
                 <div class="custom-input-wrapper">
@@ -65,7 +58,6 @@
                   </ion-input>
                 </div>
               </div>
-
               <div class="buttons-container">
                 <ion-button
                   type="submit"
@@ -74,7 +66,6 @@
                   [disabled]="salvando || carregando">
                   SALVAR ALTERAÇÕES
                 </ion-button>
-
                 <ion-button
                   type="button"
                   class="btn-excluir"
@@ -85,11 +76,9 @@
                   Excluir cliente
                 </ion-button>
               </div>
-
             </form>
           </ion-card-content>
         </ion-card>
-
       </ion-col>
     </ion-row>
   </ion-grid>
