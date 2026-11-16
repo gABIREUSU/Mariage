@@ -1,115 +1,68 @@
-<ion-content [fullscreen]="true" class="config-background">
+<ion-content [fullscreen]="true">
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-sm="10" size-md="8" size-lg="6" class="config-container">
-
-
+      <ion-col size="12" size-sm="10" size-md="8" size-lg="6" class="page-container">
         <div class="page-header">
           <h1>Configurações</h1>
-          <p>Gerencie as preferências e configurações do sistema</p>
+          <p>Gerencie as preferências do app</p>
         </div>
-
+        @if (usuario(); as u) {
+          <div class="section-block">
+            <h2 class="section-title">Conta</h2>
+            <ion-card class="settings-card">
+              <ion-list class="ion-no-padding">
+                <ion-item lines="none">
+                  <div class="icon-circle" slot="start">
+                    <ion-icon name="person-circle"></ion-icon>
+                  </div>
+                  <ion-label>
+                    <h3>{{ u.nome }}</h3>
+                    <p>{{ u.email }}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-card>
+          </div>
+        }
         <div class="section-block">
-          <h2 class="section-title">Conta</h2>
+          <h2 class="section-title">Preferências</h2>
           <ion-card class="settings-card">
-            <ion-list lines="full" class="ion-no-padding">
-              
-              <ion-item button detail="false" (click)="abrirOpcao('perfil')">
+            <ion-list lines="full" class="ion-no-padding lista-config">
+              <ion-item>
                 <div class="icon-circle" slot="start">
-                  <ion-icon name="person-circle"></ion-icon>
+                  <ion-icon name="moon"></ion-icon>
                 </div>
                 <ion-label>
-                  <h3>Perfil</h3>
-                  <p>Dados da sua conta e informações pessoais</p>
+                  <h3>Modo escuro</h3>
+                  <p>Usar cores escuras no aplicativo</p>
                 </ion-label>
-                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+                <ion-toggle
+                  slot="end"
+                  aria-label="Modo escuro"
+                  [checked]="tema.escuro()"
+                  (ionChange)="tema.definir($event.detail.checked)"
+                ></ion-toggle>
               </ion-item>
-
-              <ion-item button detail="false" (click)="abrirOpcao('seguranca')">
-                <div class="icon-circle" slot="start">
-                  <ion-icon name="lock-closed"></ion-icon>
-                </div>
-                <ion-label>
-                  <h3>Segurança</h3>
-                  <p>Altere sua senha e preferências de acesso</p>
-                </ion-label>
-                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
-              </ion-item>
-
-              <ion-item button detail="false" lines="none" (click)="abrirOpcao('notificacoes')">
-                <div class="icon-circle" slot="start">
-                  <ion-icon name="notifications"></ion-icon>
-                </div>
-                <ion-label>
-                  <h3>Notificações</h3>
-                  <p>Configure notificações por e-mail e WhatsApp</p>
-                </ion-label>
-                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
-              </ion-item>
-
-            </ion-list>
-          </ion-card>
-        </div>
-
-        <div class="section-block">
-          <h2 class="section-title">Configurações do sistema</h2>
-          <ion-card class="settings-card">
-            <ion-list lines="full" class="ion-no-padding">
-
-              <ion-item button detail="false" (click)="abrirOpcao('disponibilidade')">
+              <ion-item button detail="false" lines="none" [disabled]="conectando" (click)="conectarGoogleAgenda()">
                 <div class="icon-circle" slot="start">
                   <ion-icon name="calendar"></ion-icon>
                 </div>
                 <ion-label>
-                  <h3>Disponibilidade</h3>
-                  <p>Configure horários de trabalhos e folgas</p>
+                  <h3>Google Agenda</h3>
+                  <p>{{ conectado ? 'Conectado nesta sessão' : 'Conectar para adicionar eventos à sua agenda' }}</p>
                 </ion-label>
-                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+                <ion-icon
+                  slot="end"
+                  class="arrow-icon"
+                  [name]="conectado ? 'checkmark-circle' : 'chevron-forward-outline'"
+                ></ion-icon>
               </ion-item>
-
-              <ion-item button detail="false" (click)="abrirOpcao('servicos')">
-                <div class="icon-circle" slot="start">
-                  <ion-icon name="camera"></ion-icon>
-                </div>
-                <ion-label>
-                  <h3>Serviços</h3>
-                  <p>Gerencie tipos de serviços e duração</p>
-                </ion-label>
-                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
-              </ion-item>
-
-              <ion-item button detail="false" lines="none" (click)="abrirOpcao('criadores')">
-                <div class="icon-circle" slot="start">
-                  <ion-icon name="person"></ion-icon>
-                </div>
-                <ion-label>
-                  <h3>Criadores Audiovisuais</h3>
-                  <p>Gerencie sua equipe de criadores</p>
-                </ion-label>
-                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
-              </ion-item>
-
             </ion-list>
           </ion-card>
         </div>
-
-
         <div class="section-block">
-          <h2 class="section-title">Outros</h2>
           <ion-card class="settings-card">
-            <ion-list lines="full" class="ion-no-padding">
-
-              <ion-item button detail="false" (click)="abrirOpcao('suporte')">
-                <div class="icon-circle" slot="start">
-                  <ion-icon name="help-outline"></ion-icon>
-                </div>
-                <ion-label>
-                  <h3>Suporte</h3>
-                  <p>Central de ajuda e contato</p>
-                </ion-label>
-                <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
-              </ion-item>
-
+            <ion-list class="ion-no-padding">
               <ion-item button detail="false" lines="none" (click)="sairDaConta()">
                 <div class="icon-circle" slot="start">
                   <ion-icon name="log-out-outline"></ion-icon>
@@ -120,11 +73,9 @@
                 </ion-label>
                 <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
               </ion-item>
-
             </ion-list>
           </ion-card>
         </div>
-
       </ion-col>
     </ion-row>
   </ion-grid>

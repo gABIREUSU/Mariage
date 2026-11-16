@@ -1,13 +1,12 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
-
+import { UsuarioService } from './usuario.service';
 export interface UsuarioSessao {
-  idUsuario: string; // uid do Firebase
+  idUsuario: string;
   nome: string;
   email: string;
 }
-
 function mapear(u: User): UsuarioSessao {
   const email = u.email ?? '';
   return {
@@ -16,34 +15,39 @@ function mapear(u: User): UsuarioSessao {
     email
   };
 }
-
 @Injectable({ providedIn: 'root' })
 export class SessaoService {
   private auth = inject(Auth);
   private authService = inject(AuthService);
-
+  private usuarios = inject(UsuarioService);
   private _usuario = signal<UsuarioSessao | null>(null);
   readonly usuario = this._usuario.asReadonly();
   readonly logado = computed(() => this._usuario() !== null);
-
+  private filaPerfil: Promise<void> = Promise.resolve();
   constructor() {
     onAuthStateChanged(this.auth, user => {
-      this._usuario.set(user ? mapear(user) : null);
+      this.definir(user);
     });
   }
-
-  // o currentUser cobre a janela logo depois do login, antes do evento chegar
   get idUsuario(): string | null {
     return this._usuario()?.idUsuario ?? this.auth.currentUser?.uid ?? null;
   }
-
-  // atualizar o nome (displayName) não dispara o onAuthStateChanged
   sincronizar(): void {
-    const u = this.auth.currentUser;
-    this._usuario.set(u ? mapear(u) : null);
+    this.definir(this.auth.currentUser);
   }
-
   sair(): Promise<void> {
     return this.authService.sair();
+  }
+
+  private definir(user: User | null): void {
+    const sessao = user ? mapear(user) : null;
+    this._usuario.set(sessao);
+    if (sessao && sessao.email) {
+      this.filaPerfil = this.filaPerfil
+        .then(() => this.usuarios.salvarPerfil(sessao))
+        .catch(e => {
+          console.error('Não foi possível salvar o perfil:', e);
+        });
+    }
   }
 }

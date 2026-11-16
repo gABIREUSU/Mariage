@@ -1,0 +1,118 @@
+<ion-content [fullscreen]="true">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-sm="10" size-md="7" size-lg="5" class="page-container">
+        <div class="page-header">
+          <h1>Editar Evento</h1>
+          <p>Altere os dados da filmagem</p>
+        </div>
+        @if (evento) {
+          <ion-card class="form-card">
+            <ion-card-content>
+              <form (ngSubmit)="salvar()">
+                <div class="input-group">
+                  <ion-label class="input-label">Noivos</ion-label>
+                  <div class="custom-input-wrapper">
+                    <ion-icon name="people" class="input-icon"></ion-icon>
+                    <ion-input type="text" [value]="titulo" [readonly]="true"></ion-input>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <ion-label class="input-label">Responsável</ion-label>
+                  <div class="custom-input-wrapper">
+                    <ion-icon name="person-circle-outline" class="input-icon"></ion-icon>
+                    <ion-select
+                      name="idUsuario"
+                      [(ngModel)]="idUsuario"
+                      cancelText="Cancelar"
+                      okText="OK"
+                      required>
+                      @for (u of usuarios; track u.idUsuario) {
+                        <ion-select-option [value]="u.idUsuario">{{ u.nome }}</ion-select-option>
+                      }
+                    </ion-select>
+                  </div>
+                </div>
+                <ion-row class="ion-no-padding date-time-row">
+                  <ion-col size="6" class="col-left">
+                    <div class="input-group">
+                      <ion-label class="input-label">Data</ion-label>
+                      <div class="custom-input-wrapper">
+                        <ion-icon name="calendar-outline" class="input-icon"></ion-icon>
+                        <ion-input
+                          type="date"
+                          [(ngModel)]="data"
+                          name="data"
+                          [min]="hoje"
+                          required>
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6" class="col-right">
+                    <div class="input-group">
+                      <ion-label class="input-label">Horário</ion-label>
+                      <div class="custom-input-wrapper">
+                        <ion-icon name="time-outline" class="input-icon"></ion-icon>
+                        <ion-input
+                          type="time"
+                          [(ngModel)]="horario"
+                          name="horario"
+                          required>
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <div class="input-group">
+                  <ion-label class="input-label">Endereço</ion-label>
+                  <div class="custom-input-wrapper">
+                    <ion-icon name="location-outline" class="input-icon"></ion-icon>
+                    <ion-input
+                      type="text"
+                      placeholder="Local da cerimônia"
+                      [(ngModel)]="endereco"
+                      name="endereco"
+                      required>
+                    </ion-input>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <ion-label class="input-label">Observação</ion-label>
+                  <div class="custom-input-wrapper">
+                    <ion-icon name="information-circle-outline" class="input-icon"></ion-icon>
+                    <ion-input
+                      type="text"
+                      placeholder="Insira o texto..."
+                      [(ngModel)]="observacao"
+                      name="observacao">
+                    </ion-input>
+                  </div>
+                </div>
+                <div class="acoes-form">
+                  <ion-button
+                    type="submit"
+                    class="btn-principal"
+                    shape="round"
+                    [disabled]="!valido || salvando">
+                    SALVAR ALTERAÇÕES
+                  </ion-button>
+                  <ion-button
+                    type="button"
+                    class="btn-secundario"
+                    shape="round"
+                    [disabled]="salvando"
+                    (click)="voltar()">
+                    VOLTAR
+                  </ion-button>
+                </div>
+              </form>
+            </ion-card-content>
+          </ion-card>
+        } @else if (!carregado) {
+          <p class="empty-state">Carregando...</p>
+        }
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

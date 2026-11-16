@@ -1,7 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
 import {
   IonContent,
   IonGrid,
@@ -12,37 +9,30 @@ import {
   IonItem,
   IonLabel,
   IonIcon,
-  IonFooter,
-  IonToolbar,
+  IonToggle,
   AlertController,
   NavController,
-  ToastController
+  ToastController,
+  ViewWillEnter
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   personCircle,
-  lockClosed,
-  notifications,
+  moon,
   calendar,
-  camera,
-  person,
-  helpOutline,
+  checkmarkCircle,
   logOutOutline,
-  chevronForwardOutline,
-  listOutline,
-  settings
+  chevronForwardOutline
 } from 'ionicons/icons';
 import { SessaoService } from '../services/sessao.service';
+import { GoogleAgendaService } from '../services/google-agenda.service';
+import { TemaService } from '../services/tema.service';
 
 @Component({
   selector: 'app-configuracoes',
   templateUrl: './configuracoes.page.html',
-  styleUrls: ['./configuracoes.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
     IonContent,
     IonGrid,
     IonRow,
@@ -52,42 +42,61 @@ import { SessaoService } from '../services/sessao.service';
     IonItem,
     IonLabel,
     IonIcon,
-    IonFooter,
-    IonToolbar
+    IonToggle
   ]
 })
-export class ConfiguracoesPage {
-
+export class ConfiguracoesPage implements ViewWillEnter {
   private sessao = inject(SessaoService);
   private nav = inject(NavController);
   private alert = inject(AlertController);
   private toast = inject(ToastController);
+  private googleAgenda = inject(GoogleAgendaService);
+  readonly tema = inject(TemaService);
+  readonly usuario = this.sessao.usuario;
+  saindo = false;
+  conectando = false;
 
-  saindo: boolean = false;
-
-  constructor(private router: Router) {
-    addIcons({
-      personCircle,
-      lockClosed,
-      notifications,
-      calendar,
-      camera,
-      person,
-      helpOutline,
-      logOutOutline,
-      chevronForwardOutline,
-      listOutline,
-      settings
-    });
+  constructor() {
+    addIcons({ personCircle, moon, calendar, checkmarkCircle, logOutOutline, chevronForwardOutline });
   }
 
-  abrirOpcao(opcao: string) {
-    console.log('Abrindo configuração:', opcao);
+  async ionViewWillEnter() {
+    try {
+      if (await this.googleAgenda.concluirRedirect()) {
+        await this.avisar('Google Agenda conectado', 'success');
+      }
+    } catch (e) {
+      if (!this.googleAgenda.cancelado(e)) {
+        await this.avisar(this.googleAgenda.mensagemDeErro(e));
+      }
+    }
+  }
+
+  get conectado(): boolean {
+    return this.googleAgenda.temToken();
+  }
+
+  async conectarGoogleAgenda() {
+    if (this.conectando) return;
+    this.conectando = true;
+    try {
+      if (this.googleAgenda.usaRedirect() && !this.googleAgenda.temToken()) {
+        await this.googleAgenda.conectarPorRedirect();
+        return;
+      }
+      await this.googleAgenda.verificarAcesso();
+      await this.avisar('Google Agenda conectado', 'success');
+    } catch (e) {
+      if (!this.googleAgenda.cancelado(e)) {
+        await this.avisar(this.googleAgenda.mensagemDeErro(e));
+      }
+    } finally {
+      this.conectando = false;
+    }
   }
 
   async sairDaConta() {
     if (this.saindo) return;
-
     const alerta = await this.alert.create({
       header: 'Sair da conta',
       message: 'Você precisará entrar novamente para acessar o app.',
@@ -109,20 +118,19 @@ export class ConfiguracoesPage {
       await this.sessao.sair();
       await this.nav.navigateRoot('/login');
     } catch {
-      const t = await this.toast.create({
-        message: 'Não foi possível sair. Tente novamente',
-        duration: 2500,
-        position: 'top',
-        color: 'danger'
-      });
-      await t.present();
+      await this.avisar('Não foi possível sair. Tente novamente');
     } finally {
       this.saindo = false;
     }
   }
 
-  navegarTab(rota: string) {
-    this.router.navigate([rota]);
+  private async avisar(mensagem: string, cor: 'success' | 'danger' = 'danger') {
+    const t = await this.toast.create({
+      message: mensagem,
+      duration: 3000,
+      position: 'top',
+      color: cor
+    });
+    await t.present();
   }
-
 }

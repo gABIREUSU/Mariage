@@ -1,7 +1,9 @@
 import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import {
   Auth,
+  GoogleAuthProvider,
   User,
+  UserCredential,
   authState,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -9,14 +11,20 @@ import {
   signOut,
   updateProfile
 } from '@angular/fire/auth';
+import {
+  browserPopupRedirectResolver,
+  getRedirectResult,
+  signInWithPopup,
+  signInWithRedirect
+} from 'firebase/auth';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private auth = inject(Auth);
   private injector = inject(Injector);
+  private redirect: Promise<UserCredential | null> | null = null;
 
-  // Espera o Firebase restaurar a sessão (importante no F5) e devolve o usuário ou null
   usuarioAtual(): Promise<User | null> {
     return firstValueFrom(this.dentro(() => authState(this.auth)));
   }
@@ -28,6 +36,24 @@ export class AuthService {
     return cred.user;
   }
 
+  modoInstalado(): boolean {
+    const nav = navigator as Navigator & { standalone?: boolean };
+    return window.matchMedia('(display-mode: standalone)').matches || nav.standalone === true;
+  }
+
+  async entrarComGoogle(): Promise<User | null> {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    if (this.modoInstalado()) {
+      await this.dentro(() =>
+        signInWithRedirect(this.auth, provider, browserPopupRedirectResolver)
+      );
+      return null;
+    }
+    const cred = await this.dentro(() => signInWithPopup(this.auth, provider, browserPopupRedirectResolver));
+    return cred.user;
+  }
+
   async cadastrar(nome: string, email: string, senha: string): Promise<User> {
     const cred = await this.dentro(() =>
       createUserWithEmailAndPassword(this.auth, email.trim(), senha)
@@ -35,9 +61,21 @@ export class AuthService {
     try {
       await this.dentro(() => updateProfile(cred.user, { displayName: nome.trim() }));
     } catch {
-      // a conta já foi criada; sem nome, a sessão usa o início do e-mail
     }
     return cred.user;
+  }
+
+  resultadoRedirect(): Promise<UserCredential | null> {
+    if (!this.redirect) {
+      this.redirect = this.dentro(() =>
+        getRedirectResult(this.auth, browserPopupRedirectResolver)
+      );
+    }
+    return this.redirect;
+  }
+
+  prepararPopup(): void {
+    this.resultadoRedirect().catch(() => {});
   }
 
   sair(): Promise<void> {
@@ -46,6 +84,11 @@ export class AuthService {
 
   recuperarSenha(email: string): Promise<void> {
     return this.dentro(() => sendPasswordResetEmail(this.auth, email.trim()));
+  }
+
+  popupCancelado(e: unknown): boolean {
+    const code = (e as { code?: string })?.code ?? '';
+    return code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request';
   }
 
   mensagemDeErro(e: unknown): string {
@@ -71,12 +114,22 @@ export class AuthService {
       case 'auth/user-disabled':
         return 'Esta conta está desativada';
       case 'auth/operation-not-allowed':
-        return 'Login por e-mail e senha não está habilitado no Firebase';
+        return 'Este método de login não está habilitado no Firebase';
+      case 'auth/popup-blocked':
+        return 'O navegador bloqueou o popup. Libere popups para este site e tente de novo';
+      case 'auth/account-exists-with-different-credential':
+        return 'Já existe uma conta com este e-mail usando outro método de login';
+      case 'auth/unauthorized-domain':
+        return 'Este domínio não está autorizado no Firebase (Authentication > Settings)';
       case 'auth/invalid-api-key':
       case 'auth/configuration-not-found':
         return 'Configuração do Firebase inválida. Confira o environment';
-      default:
-        return 'Não foi possível concluir. Tente novamente';
+      default: {
+        const detalhe = code || (e instanceof Error ? e.message : String(e ?? ''));
+        return detalhe
+          ? `Não foi possível concluir (${detalhe}). Tente novamente`
+          : 'Não foi possível concluir. Tente novamente';
+      }
     }
   }
 

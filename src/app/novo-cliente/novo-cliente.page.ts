@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -20,14 +19,11 @@ import { addIcons } from 'ionicons';
 import { personOutline, mailOutline, logoWhatsapp } from 'ionicons/icons';
 import { ClienteService } from '../services/cliente.service';
 import { emailValido, formatarTelefone, telefoneValido } from '../utils/contato';
-
 @Component({
   selector: 'app-novo-cliente',
   templateUrl: './novo-cliente.page.html',
-  styleUrls: ['./novo-cliente.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     IonContent,
     IonGrid,
@@ -42,13 +38,11 @@ import { emailValido, formatarTelefone, telefoneValido } from '../utils/contato'
   ]
 })
 export class NovoClientePage implements ViewWillEnter {
-
   nomeNoiva: string = '';
   nomeNoivo: string = '';
   emailPrincipal: string = '';
   telefoneWhatsapp: string = '';
   salvando: boolean = false;
-
   constructor(
     private router: Router,
     private clienteService: ClienteService,
@@ -56,28 +50,23 @@ export class NovoClientePage implements ViewWillEnter {
   ) {
     addIcons({ personOutline, mailOutline, logoWhatsapp });
   }
-
   ionViewWillEnter() {
     this.nomeNoiva = '';
     this.nomeNoivo = '';
     this.emailPrincipal = '';
     this.telefoneWhatsapp = '';
   }
-
   aoDigitarTelefone(ev: Event) {
     const campo = ev.target as HTMLInputElement;
     const formatado = formatarTelefone(String(campo.value ?? ''));
     this.telefoneWhatsapp = formatado;
     campo.value = formatado;
   }
-
   async cadastrarCliente() {
     if (this.salvando) return;
-
     const nomeNoiva = this.nomeNoiva.trim();
     const nomeNoivo = this.nomeNoivo.trim();
     const email = this.emailPrincipal.trim();
-
     if (!nomeNoiva || !nomeNoivo) {
       await this.avisar('Informe o nome da noiva e do noivo');
       return;
@@ -90,7 +79,6 @@ export class NovoClientePage implements ViewWillEnter {
       await this.avisar('Informe o telefone com DDD');
       return;
     }
-
     this.salvando = true;
     try {
       await this.clienteService.create({
@@ -105,14 +93,13 @@ export class NovoClientePage implements ViewWillEnter {
       const msg = e instanceof Error ? e.message : '';
       await this.avisar(
         !msg || msg === 'Failed to fetch'
-          ? 'Não foi possível salvar. O servidor está rodando?'
+          ? 'Não foi possível salvar. Verifique a conexão e tente de novo'
           : msg
       );
     } finally {
       this.salvando = false;
     }
   }
-
   private async avisar(mensagem: string, cor: 'success' | 'danger' = 'danger') {
     const t = await this.toast.create({
       message: mensagem,
@@ -122,5 +109,4 @@ export class NovoClientePage implements ViewWillEnter {
     });
     await t.present();
   }
-
 }

@@ -1,6 +1,4 @@
-// evento.model.ts
 export type StatusEvento = 'agendado' | 'concluido' | 'cancelado';
-
 export interface Evento {
   idEvento: string;
   idCliente: string;
@@ -10,4 +8,5 @@ export interface Evento {
   endereco: string;
   observacao: string;
   status: StatusEvento;
+  googleEventId?: string;
 }

@@ -2,33 +2,28 @@
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-sm="10" size-md="8" size-lg="6" class="page-container">
-
         <div class="page-header">
           <h1>Calendário</h1>
           <p>Visualize, organize e cadastre os eventos.</p>
         </div>
-
         @if (carregado()) {
           <ion-card class="settings-card">
             <ion-datetime
               presentation="date"
               locale="pt-BR"
-              [highlightedDates]="destacar"
+              [highlightedDates]="destacar()"
               (ionChange)="selecionar($event.detail.value)"
             ></ion-datetime>
           </ion-card>
         }
-
         <div class="section-block lista-eventos">
           <h2 class="section-title">{{ titulo() }}</h2>
-
           @if (lista().length) {
             <app-evento-card [itens]="lista()" (abrir)="abrir($event)" />
           } @else {
             <p class="empty-state">Nenhum evento.</p>
           }
         </div>
-
       </ion-col>
     </ion-row>
   </ion-grid>

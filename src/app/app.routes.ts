@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { authGuard, guestGuard } from './guards/auth.guard';
-
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 {
@@ -16,6 +15,11 @@ export const routes: Routes = [
       {
         path: 'eventos/novo',
         loadComponent: () => import('./novo-evento/novo-evento.page').then(m => m.NovoEventoPage),
+      },
+      {
+        path: 'eventos/editar/:id',
+        loadComponent: () =>
+          import('./editar-evento/editar-evento.page').then(m => m.EditarEventoPage),
       },
       {
         path: 'eventos',

@@ -14,9 +14,9 @@ ion-row.full-height {
 }
 
 .login-card {
-  background: #ffffff;
-  border-radius: 22px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  background: var(--app-surface);
+  border-radius: var(--app-form-radius);
+  box-shadow: var(--app-form-shadow);
   padding: 20px 8px;
   margin: 0;
 }
@@ -28,7 +28,7 @@ ion-row.full-height {
   .mariage-title {
     font-family: 'Great Vibes', cursive, serif;
     font-size: 3.1rem;
-    color: #111111;
+    color: var(--app-text-title);
     font-weight: 400;
     margin: 0;
   }
@@ -40,7 +40,7 @@ ion-row.full-height {
 
   a {
     font-size: 0.7rem;
-    color: #999999;
+    color: var(--app-text-hint);
     text-decoration: underline;
     cursor: pointer;
   }
@@ -48,11 +48,37 @@ ion-row.full-height {
 
 .register-container {
   font-size: 0.68rem;
-  color: #999999;
+  color: var(--app-text-hint);
 
   a {
-    color: #888888;
+    color: var(--app-text-subtitle);
     text-decoration: underline;
     cursor: pointer;
   }
+}
+
+.date-time-row {
+  justify-content: space-between;
+
+  .col-left {
+    padding-right: 12px;
+  }
+
+  .col-right {
+    padding-left: 12px;
+  }
+}
+
+.clientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.section-subtitle {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--app-text-label);
+  margin: 0 0 8px 4px;
 }

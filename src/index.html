@@ -1,30 +1,83 @@
+
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <title>Ionic App</title>
+  <meta charset="utf-8"/>
+  <title>Mariage</title>
 
-  <base href="/" />
+  <base href="/"/>
 
-  <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
+  <meta name="color-scheme" content="light dark"/>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("mariage-tema");
+        var escuro = t ? t === "escuro" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (escuro) document.documentElement.classList.add("dark");
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Mariage: agenda de casamentos para fotógrafos e cinegrafistas. Cadastre clientes, agende eventos e sincronize com o Google Agenda."/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="msapplication-tap-highlight" content="no"/>
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+  <meta name="theme-color" content="#efefef"/>
 
-  <!-- add to homescreen for ios -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link rel="icon" type="image/png" sizes="196x196" href="assets/icons/favicon-196.png"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <link rel="apple-touch-icon" href="assets/icons/apple-icon-180.png"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
 
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    #abertura {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #efefef;
+      color: #333333;
+      font-family: 'Great Vibes', Georgia, 'Times New Roman', serif;
+      font-size: 3.2rem;
+      transition: opacity 0.25s ease;
+    }
+    #abertura img {
+      width: 112px;
+      height: 112px;
+    }
+    #abertura.saindo {
+      opacity: 0;
+      pointer-events: none;
+    }
+    html.dark #abertura {
+      background: #121212;
+      color: #f2f2f2;
+    }
+    html.dark #abertura img {
+      filter: invert(1);
+    }
+  </style>
 </head>
 
 <body>
+  <div id="abertura" aria-hidden="true">
+    <img src="assets/icons/favicon-196.png" width="112" height="112" alt=""/>
+    <span>Mariage</span>
+  </div>
   <app-root></app-root>
-</body>
 
+  <noscript>
+    Please enable JavaScript to continue using this application.
+  </noscript>
+</body>
 </html>

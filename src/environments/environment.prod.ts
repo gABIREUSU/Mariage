@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   firebase: {
     apiKey: "AIzaSyCYoQYU4aKOUzWGhDDShsOx7rpuftORr14",
-    authDomain: "mariage-1de64.firebaseapp.com",
+    authDomain: "mariage-1de64.web.app",
     projectId: "mariage-1de64",
     storageBucket: "mariage-1de64.firebasestorage.app",
     messagingSenderId: "563551469587",

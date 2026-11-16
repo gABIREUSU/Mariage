@@ -1,73 +1,41 @@
-import { Injectable, inject } from '@angular/core';
-import { DatabaseService } from './database.service';
-import { EventoService } from './evento.service';
+import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
+import { Firestore, collection, doc, getDoc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Usuario } from '../models/usuario.model';
-import { environment } from '../../environments/environment';
+import { traduzirErroFirestore } from '../utils/firestore';
 
-export const ADMIN_PADRAO = {
-  nome: 'Admin',
-  email: 'admin@mariage.com',
-  senha: 'admin123',
-};
-
-const KEY = 'usuarios';
+const COLECAO = 'usuarios';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
-  private db = inject(DatabaseService);
-  private eventos = inject(EventoService);
+  private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
-  getAll(): Promise<Usuario[]> {
-    return this.db.getAll<Usuario>(KEY);
+  async getAll(): Promise<Usuario[]> {
+    const snap = await this.executar(() => getDocs(collection(this.firestore, COLECAO)));
+    return snap.docs.map(d => d.data() as Usuario);
   }
 
   async getById(idUsuario: string): Promise<Usuario | undefined> {
-    return (await this.getAll()).find(u => u.idUsuario === idUsuario);
+    const snap = await this.executar(() => getDoc(doc(this.firestore, COLECAO, idUsuario)));
+    return snap.exists() ? (snap.data() as Usuario) : undefined;
   }
 
-  async getByEmail(email: string): Promise<Usuario | undefined> {
-    const alvo = email.trim().toLowerCase();
-    return (await this.getAll()).find(u => u.email.toLowerCase() === alvo);
+  async salvarPerfil(usuario: Usuario): Promise<void> {
+    const perfil: Usuario = {
+      idUsuario: usuario.idUsuario,
+      nome: usuario.nome.trim().slice(0, 120) || 'Usuário',
+      email: usuario.email.trim().slice(0, 160)
+    };
+    const atual = await this.getById(perfil.idUsuario);
+    if (atual && atual.nome === perfil.nome && atual.email === perfil.email) return;
+    await this.executar(() => setDoc(doc(this.firestore, COLECAO, perfil.idUsuario), perfil));
   }
 
-  async create(dados: Omit<Usuario, 'idUsuario'>): Promise<Usuario> {
-    if (await this.getByEmail(dados.email)) {
-      throw new Error('E-mail já cadastrado');
+  private async executar<T>(fn: () => Promise<T>): Promise<T> {
+    try {
+      return await runInInjectionContext(this.injector, fn);
+    } catch (e) {
+      throw traduzirErroFirestore(e);
     }
-    const usuarios = await this.getAll();
-    const novo: Usuario = { ...dados, idUsuario: crypto.randomUUID() };
-    usuarios.push(novo);
-    await this.db.saveAll(KEY, usuarios);
-    return novo;
-  }
-
-  async update(idUsuario: string, dados: Partial<Omit<Usuario, 'idUsuario'>>): Promise<void> {
-    if (dados.email) {
-      const existente = await this.getByEmail(dados.email);
-      if (existente && existente.idUsuario !== idUsuario) {
-        throw new Error('E-mail já cadastrado');
-      }
-    }
-    const usuarios = await this.getAll();
-    const i = usuarios.findIndex(u => u.idUsuario === idUsuario);
-    if (i === -1) throw new Error('Usuário não encontrado');
-    usuarios[i] = { ...usuarios[i], ...dados };
-    await this.db.saveAll(KEY, usuarios);
-  }
-
-  // restrict: só exclui se não houver eventos sob responsabilidade dele
-  async delete(idUsuario: string): Promise<void> {
-    const eventos = await this.eventos.getByUsuario(idUsuario);
-    if (eventos.length > 0) {
-      throw new Error('Reatribua os eventos deste usuário antes de excluí-lo');
-    }
-    const usuarios = await this.getAll();
-    await this.db.saveAll(KEY, usuarios.filter(u => u.idUsuario !== idUsuario));
-  }
-
-  // senha em texto puro: aceitável pro trabalho, mas vale citar como limitação
-  async login(email: string, senha: string): Promise<Usuario | null> {
-    const usuario = await this.getByEmail(email);
-    return usuario && usuario.senha === senha ? usuario : null;
   }
 }

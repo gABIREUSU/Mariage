@@ -11,6 +11,7 @@ import {
   IonItem,
   IonLabel,
   IonIcon,
+  IonButton,
   ToastController,
   ViewWillEnter
 } from '@ionic/angular/standalone';
@@ -18,18 +19,15 @@ import { addIcons } from 'ionicons';
 import { add, people, chevronForwardOutline } from 'ionicons/icons';
 import { ClienteService } from '../services/cliente.service';
 import { primeiroNome } from '../utils/contato';
-
 interface ClienteCasal {
   idCliente: string;
   nomes: string;
   email: string;
   telefone: string;
 }
-
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.page.html',
-  styleUrls: ['./clientes.page.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -41,14 +39,13 @@ interface ClienteCasal {
     IonList,
     IonItem,
     IonLabel,
-    IonIcon
+    IonIcon,
+    IonButton
   ]
 })
 export class ClientesPage implements ViewWillEnter {
-
   clientes: ClienteCasal[] = [];
   carregado: boolean = false;
-
   constructor(
     private router: Router,
     private clienteService: ClienteService,
@@ -56,8 +53,6 @@ export class ClientesPage implements ViewWillEnter {
   ) {
     addIcons({ add, people, chevronForwardOutline });
   }
-
-  // recarrega toda vez que a tela aparece (ao voltar do cadastro ou da edição)
   async ionViewWillEnter() {
     try {
       const todos = await this.clienteService.getAll();
@@ -70,20 +65,17 @@ export class ClientesPage implements ViewWillEnter {
         }))
         .sort((a, b) => a.nomes.localeCompare(b.nomes, 'pt-BR'));
     } catch {
-      await this.avisar('Não foi possível carregar os clientes. O servidor está rodando?');
+      await this.avisar('Não foi possível carregar os clientes. Verifique a conexão');
     } finally {
       this.carregado = true;
     }
   }
-
   irParaNovoCliente() {
     this.router.navigateByUrl('/tabs/clientes/novo');
   }
-
   selecionarCliente(cliente: ClienteCasal) {
     this.router.navigateByUrl('/tabs/clientes/editar/' + cliente.idCliente);
   }
-
   private async avisar(mensagem: string) {
     const t = await this.toast.create({
       message: mensagem,
@@ -93,7 +85,6 @@ export class ClientesPage implements ViewWillEnter {
     });
     await t.present();
   }
-
     porId(_: number, c: ClienteCasal) {
     return c.idCliente;
   }

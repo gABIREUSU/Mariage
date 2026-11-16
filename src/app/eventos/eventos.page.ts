@@ -7,6 +7,8 @@ import { add } from 'ionicons/icons';
 import { Evento } from '../models/evento.model';
 import { EventoService } from '../services/evento.service';
 import { ClienteService } from '../services/cliente.service';
+import { UsuarioService } from '../services/usuario.service';
+import { AcoesEventoService } from '../services/acoes-evento.service';
 import { EventoCardComponent } from '../components/evento-card/evento-card.component';
 import { normalizar, rotuloMes } from '../utils/datas';
 import { EventoView, montarViews } from '../utils/evento';
@@ -18,7 +20,6 @@ type Filtro = 'todos' | Evento['status'];
   selector: 'app-eventos',
   standalone: true,
   templateUrl: './eventos.page.html',
-  styleUrls: ['./eventos.page.scss'],
   imports: [
     IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonSearchbar, IonChip,
     EventoCardComponent,
@@ -28,6 +29,8 @@ export class EventosPage implements ViewWillEnter {
   private router = inject(Router);
   private eventoService = inject(EventoService);
   private clienteService = inject(ClienteService);
+  private usuarioService = inject(UsuarioService);
+  private acoes = inject(AcoesEventoService);
 
   readonly filtros: { valor: Filtro; rotulo: string }[] = [
     { valor: 'todos', rotulo: 'Todos' },
@@ -43,14 +46,12 @@ export class EventosPage implements ViewWillEnter {
   grupos = computed(() => {
     const termo = normalizar(this.busca());
     const f = this.filtro();
-
     const filtrados = this.itens()
-      .filter(v => f === 'todos' || v.evento.status === f)
+      .filter(v => f === 'todos' || v.status === f)
       .filter(v =>
         !termo || normalizar(`${v.titulo} ${v.nomes} ${v.evento.endereco}`).includes(termo))
       .sort((a, b) =>
         (a.evento.data + a.evento.horario).localeCompare(b.evento.data + b.evento.horario));
-
     const porMes = new Map<string, EventoView[]>();
     for (const v of filtrados) {
       const chave = v.evento.data.slice(0, 7);
@@ -62,17 +63,25 @@ export class EventosPage implements ViewWillEnter {
   constructor() { addIcons({ add }); }
 
   async ionViewWillEnter() {
-    const [eventos, clientes] = await Promise.all([
-      this.eventoService.getAll(),
-      this.clienteService.getAll(),
-    ]);
-    this.itens.set(montarViews(eventos, clientes));
+    await this.carregar();
   }
 
   novo() {
     this.router.navigateByUrl('/tabs/eventos/novo');
   }
 
-  // TODO: navegar pra edição do evento quando a tela existir
-  abrir(_evento: Evento) {}
+  async abrir(evento: Evento) {
+    const view = this.itens().find(v => v.evento.idEvento === evento.idEvento);
+    const mudou = await this.acoes.abrir(evento, view?.titulo ?? 'Casamento');
+    if (mudou) await this.carregar();
+  }
+
+  private async carregar() {
+    const [eventos, clientes, usuarios] = await Promise.all([
+      this.eventoService.getAll(),
+      this.clienteService.getAll(),
+      this.usuarioService.getAll().catch(() => []),
+    ]);
+    this.itens.set(montarViews(eventos, clientes, usuarios));
+  }
 }

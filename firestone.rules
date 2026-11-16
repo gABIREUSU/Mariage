@@ -15,7 +15,6 @@ service cloud.firestore {
       return v is string && v.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
     }
 
-    // ---------- usuários (perfil; a senha vive no Firebase Auth) ----------
     match /usuarios/{uid} {
       allow read: if logado();
       allow create, update: if logado()
@@ -25,10 +24,9 @@ service cloud.firestore {
         && request.resource.data.idUsuario == uid
         && texto(request.resource.data.nome, 1, 120)
         && texto(request.resource.data.email, 3, 160);
-      allow delete: if false; // exclusão de usuário será decidida na fase 2d
+      allow delete: if false;
     }
 
-    // ---------- clientes (os noivos) ----------
     match /clientes/{idCliente} {
       allow read: if logado();
       allow create, update: if logado()
@@ -42,11 +40,10 @@ service cloud.firestore {
       allow delete: if logado();
     }
 
-    // ---------- eventos ----------
     match /eventos/{idEvento} {
       allow read: if logado();
       allow create, update: if logado()
-        && request.resource.data.keys().hasOnly(['idEvento', 'idCliente', 'idUsuario', 'data', 'horario', 'endereco', 'observacao', 'status'])
+        && request.resource.data.keys().hasOnly(['idEvento', 'idCliente', 'idUsuario', 'data', 'horario', 'endereco', 'observacao', 'status', 'googleEventId'])
         && request.resource.data.keys().hasAll(['idEvento', 'idCliente', 'idUsuario', 'data', 'horario', 'endereco', 'observacao', 'status'])
         && request.resource.data.idEvento == idEvento
         && texto(request.resource.data.idCliente, 1, 100)
@@ -57,11 +54,11 @@ service cloud.firestore {
         && texto(request.resource.data.endereco, 1, 300)
         && request.resource.data.observacao is string
         && request.resource.data.observacao.size() <= 1000
-        && request.resource.data.status in ['agendado', 'concluido', 'cancelado'];
+        && request.resource.data.status in ['agendado', 'concluido', 'cancelado']
+        && (!('googleEventId' in request.resource.data) || texto(request.resource.data.googleEventId, 1, 1024));
       allow delete: if logado();
     }
 
-    // ---------- agenda: um documento por dia ocupado (regra "um evento por dia") ----------
     match /agenda/{dia} {
       allow read: if logado();
       allow create: if logado()
@@ -71,9 +68,8 @@ service cloud.firestore {
         && request.resource.data.data == dia
         && texto(request.resource.data.idEvento, 1, 100);
       allow delete: if logado();
-      allow update: if false; // a trava não muda de dono: apaga e cria de novo
+      allow update: if false;
     }
 
-    // todo o resto: negado por padrão
   }
 }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -13,10 +12,11 @@ import {
   IonInput,
   IonIcon,
   IonButton,
-  ToastController
+  ToastController,
+  ViewWillEnter
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mail, lockClosed, eye, eyeOff, personOutline } from 'ionicons/icons';
+import { mail, lockClosed, eye, eyeOff, personOutline, logoGoogle } from 'ionicons/icons';
 import { AuthService } from '../services/auth.service';
 import { SessaoService } from '../services/sessao.service';
 import { emailValido } from '../utils/contato';
@@ -24,10 +24,8 @@ import { emailValido } from '../utils/contato';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     IonContent,
     IonGrid,
@@ -41,8 +39,7 @@ import { emailValido } from '../utils/contato';
     IonButton
   ]
 })
-export class LoginPage {
-
+export class LoginPage implements ViewWillEnter {
   nome: string = '';
   email: string = '';
   senha: string = '';
@@ -56,7 +53,19 @@ export class LoginPage {
     private sessao: SessaoService,
     private toast: ToastController
   ) {
-    addIcons({ mail, lockClosed, eye, eyeOff, personOutline });
+    addIcons({ mail, lockClosed, eye, eyeOff, personOutline, logoGoogle });
+  }
+
+  async ionViewWillEnter() {
+    if (!this.authService.modoInstalado()) return;
+    try {
+      const resultado = await this.authService.resultadoRedirect();
+      if (resultado?.operationType === 'signIn') await this.concluirLogin();
+    } catch (e) {
+      if (!this.authService.popupCancelado(e)) {
+        await this.avisar(this.authService.mensagemDeErro(e));
+      }
+    }
   }
 
   alternarVisibilidadeSenha() {
@@ -70,7 +79,6 @@ export class LoginPage {
 
   async enviar() {
     if (this.enviando) return;
-
     const email = this.email.trim();
     if (this.modoCadastro && !this.nome.trim()) {
       await this.avisar('Informe o seu nome');
@@ -88,7 +96,6 @@ export class LoginPage {
       await this.avisar('A senha precisa ter pelo menos 6 caracteres');
       return;
     }
-
     this.enviando = true;
     try {
       if (this.modoCadastro) {
@@ -97,14 +104,24 @@ export class LoginPage {
       } else {
         await this.authService.entrar(email, this.senha);
       }
-      this.nome = '';
-      this.senha = '';
-      this.modoCadastro = false;
-      // tira o foco do botão antes de a tela de login ser escondida
-      (document.activeElement as HTMLElement | null)?.blur();
-      await this.router.navigateByUrl('/tabs/eventos', { replaceUrl: true });
+      await this.concluirLogin();
     } catch (e) {
       await this.avisar(this.authService.mensagemDeErro(e));
+    } finally {
+      this.enviando = false;
+    }
+  }
+
+  async entrarComGoogle() {
+    if (this.enviando) return;
+    this.enviando = true;
+    try {
+      const usuario = await this.authService.entrarComGoogle();
+      if (usuario) await this.concluirLogin();
+    } catch (e) {
+      if (!this.authService.popupCancelado(e)) {
+        await this.avisar(this.authService.mensagemDeErro(e));
+      }
     } finally {
       this.enviando = false;
     }
@@ -127,6 +144,14 @@ export class LoginPage {
     }
   }
 
+  private async concluirLogin() {
+    this.nome = '';
+    this.senha = '';
+    this.modoCadastro = false;
+    (document.activeElement as HTMLElement | null)?.blur();
+    await this.router.navigateByUrl('/tabs/eventos', { replaceUrl: true });
+  }
+
   private async avisar(mensagem: string, cor: 'success' | 'danger' = 'danger') {
     const t = await this.toast.create({
       message: mensagem,
@@ -136,5 +161,4 @@ export class LoginPage {
     });
     await t.present();
   }
-
 }
